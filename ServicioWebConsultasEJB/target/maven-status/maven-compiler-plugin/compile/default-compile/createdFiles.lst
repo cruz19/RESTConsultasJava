@@ -1,0 +1,12 @@
+co\edu\unicundi\ejb\dtos\ErrorDto.class
+co\edu\unicundi\ejb\interfaces\IConsultaService.class
+co\edu\unicundi\ejb\entity\DetalleConsulta_.class
+co\edu\unicundi\ejb\service\ConsultaServiceImpl.class
+co\edu\unicundi\ejb\exceptions\IntegrityException.class
+co\edu\unicundi\ejb\repository\impl\ConsultaRepositoryImpl.class
+co\edu\unicundi\ejb\exceptions\ModelNotFoundException.class
+co\edu\unicundi\ejb\entity\DetalleConsulta.class
+co\edu\unicundi\ejb\entity\Consulta.class
+co\edu\unicundi\ejb\exceptions\EmptyModelException.class
+co\edu\unicundi\ejb\repository\IConsultaRepository.class
+co\edu\unicundi\ejb\entity\Consulta_.class

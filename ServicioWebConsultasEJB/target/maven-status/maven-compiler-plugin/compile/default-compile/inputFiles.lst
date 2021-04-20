@@ -1,0 +1,10 @@
+C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultasEJB\src\main\java\co\edu\unicundi\ejb\dtos\ErrorDto.java
+C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultasEJB\src\main\java\co\edu\unicundi\ejb\exceptions\ModelNotFoundException.java
+C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultasEJB\src\main\java\co\edu\unicundi\ejb\exceptions\IntegrityException.java
+C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultasEJB\src\main\java\co\edu\unicundi\ejb\repository\IConsultaRepository.java
+C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultasEJB\src\main\java\co\edu\unicundi\ejb\entity\DetalleConsulta.java
+C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultasEJB\src\main\java\co\edu\unicundi\ejb\repository\impl\ConsultaRepositoryImpl.java
+C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultasEJB\src\main\java\co\edu\unicundi\ejb\service\ConsultaServiceImpl.java
+C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultasEJB\src\main\java\co\edu\unicundi\ejb\entity\Consulta.java
+C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultasEJB\src\main\java\co\edu\unicundi\ejb\exceptions\EmptyModelException.java
+C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultasEJB\src\main\java\co\edu\unicundi\ejb\interfaces\IConsultaService.java
