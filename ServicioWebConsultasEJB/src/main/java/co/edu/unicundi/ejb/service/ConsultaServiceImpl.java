@@ -1,14 +1,18 @@
 package co.edu.unicundi.ejb.service;
 
+import co.edu.unicundi.ejb.dtos.ConsultaDto;
 import co.edu.unicundi.ejb.entity.Consulta;
 import co.edu.unicundi.ejb.entity.DetalleConsulta;
 import co.edu.unicundi.ejb.exceptions.EmptyModelException;
+import co.edu.unicundi.ejb.exceptions.IntegrityException;
 import co.edu.unicundi.ejb.exceptions.ModelNotFoundException;
 import co.edu.unicundi.ejb.interfaces.IConsultaService;
 import co.edu.unicundi.ejb.repository.IConsultaRepository;
+import co.edu.unicundi.ejb.repository.IMedicoRepository;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import org.modelmapper.ModelMapper;
 
 /**
  * @author Steven Cruz
@@ -18,24 +22,30 @@ import javax.ejb.Stateless;
 public class ConsultaServiceImpl implements IConsultaService {
     
     @EJB
-    private IConsultaRepository repository;
+    private IConsultaRepository consultaRepository;
+    @EJB
+    private IMedicoRepository medicoRepository;
+    
+    ModelMapper modelMapper = new ModelMapper();
 
     @Override
     public List<Consulta> buscar() {
-        return repository.findAll();
+        return consultaRepository.findAll();
     }
 
     @Override
-    public Consulta buscarPorId(Integer id) throws ModelNotFoundException {
-        Consulta consulta = repository.find(id);
+    public ConsultaDto buscarPorId(Integer id) throws ModelNotFoundException {
+        Consulta consulta = consultaRepository.find(id);
         if (consulta == null){
             throw new ModelNotFoundException("No existe una consulta con el id enviado");
         }
-        return consulta;
+        ConsultaDto consultaDTO = modelMapper.map(consulta, ConsultaDto.class);
+        consultaDTO.getMedico().setConsultas(null);
+        return consultaDTO;
     }
 
     @Override
-    public void guardar(Consulta consulta) throws EmptyModelException {
+    public void guardar(Consulta consulta) throws EmptyModelException, IntegrityException {
         if (consulta == null){
             throw new EmptyModelException("El objeto consulta está vacío");
         }
@@ -44,19 +54,25 @@ public class ConsultaServiceImpl implements IConsultaService {
                 dc.setConsulta(consulta);
             }
         }
-        consulta.getMedico().getDireccion().setMedico(consulta.getMedico());
-        repository.create(consulta);
+        if (consulta.getMedico() != null){
+            boolean emailExists = medicoRepository.findByEmail(consulta.getMedico().getCorreo(), 0);
+            if (emailExists){
+                throw new IntegrityException("Ya existe un médico con el correo enviado");
+            }
+            consulta.getMedico().getDireccion().setMedico(consulta.getMedico());   
+        }
+        consultaRepository.create(consulta);
     }
 
     @Override
-    public void actualizar(Consulta consulta) throws EmptyModelException, ModelNotFoundException {
+    public void actualizar(Consulta consulta) throws EmptyModelException, ModelNotFoundException, IntegrityException {
         if (consulta == null){
             throw new EmptyModelException("El objeto consulta está vacío");
         }
         if (consulta.getId() == null){
             throw new ModelNotFoundException("No existe una consulta con el id enviado");
         }
-        Consulta consultaEntity = this.buscarPorId(consulta.getId());
+        Consulta consultaEntity = consultaRepository.find(consulta.getId());
         if (consultaEntity == null){
             throw new ModelNotFoundException("No existe una consulta con el id enviado");
         }
@@ -71,6 +87,11 @@ public class ConsultaServiceImpl implements IConsultaService {
         }
         // Médico
         if (consulta.getMedico() != null){
+            boolean emailExists = medicoRepository.findByEmail(consulta.getMedico().getCorreo(), 0);
+            if (emailExists){
+                throw new IntegrityException("Ya existe un médico con el correo enviado");
+            }
+            
             consultaEntity.setMedico(consulta.getMedico());
             // Dirección
             if (consulta.getMedico().getDireccion() != null){
@@ -78,16 +99,16 @@ public class ConsultaServiceImpl implements IConsultaService {
                 consultaEntity.getMedico().getDireccion().setMedico(consultaEntity.getMedico());
             }
         }
-        repository.edit(consultaEntity);
+        consultaRepository.edit(consultaEntity);
     }
 
     @Override
     public void eliminar(Integer id) throws ModelNotFoundException {
-        Consulta consulta = this.buscarPorId(id);
+        Consulta consulta = consultaRepository.find(id);
         if (consulta == null){
             throw new ModelNotFoundException("No existe una consulta con el id enviado");
         }
-        repository.remove(consulta);
+        consultaRepository.remove(consulta);
     }
     
 }

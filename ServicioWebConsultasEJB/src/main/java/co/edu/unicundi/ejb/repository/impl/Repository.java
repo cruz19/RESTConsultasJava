@@ -3,6 +3,7 @@ package co.edu.unicundi.ejb.repository.impl;
 import co.edu.unicundi.ejb.repository.IRepository;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 /**
  * @author Steven Cruz
@@ -21,9 +22,9 @@ public abstract class Repository<T> implements IRepository<T> {
 
     @Override
     public List<T> findAll() {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
-        cq.select(cq.from(entityClass));
-        return getEntityManager().createQuery(cq).getResultList();
+        String namedQuery = entityClass.getSimpleName() + ".findAll";
+        TypedQuery<T> query = getEntityManager().createNamedQuery(namedQuery, entityClass);
+        return (List<T>) query.getResultList();
     }
 
     @Override

@@ -4,7 +4,6 @@ import co.edu.unicundi.ejb.entity.Medico;
 import co.edu.unicundi.ejb.repository.IMedicoRepository;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -28,9 +27,12 @@ public class MedicoRepository extends Repository<Medico> implements IMedicoRepos
     }
 
     @Override
-    public boolean findByEmail(String email) {
+    public boolean findByEmail(String email, int id) {
         Query query = em.createNamedQuery("Medico.findByEmail");
+        query.setParameter("email", email);
+        query.setParameter("id", id);
         int count = ((Number)query.getSingleResult()).intValue();
+        System.out.println("count = " + count);
         return count > 0;
     }
 }

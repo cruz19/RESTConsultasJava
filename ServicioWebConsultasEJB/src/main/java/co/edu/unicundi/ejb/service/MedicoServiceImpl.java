@@ -1,5 +1,7 @@
 package co.edu.unicundi.ejb.service;
 
+import co.edu.unicundi.ejb.dtos.ConsultaDto;
+import co.edu.unicundi.ejb.dtos.MedicoDto;
 import co.edu.unicundi.ejb.entity.Medico;
 import co.edu.unicundi.ejb.exceptions.EmptyModelException;
 import co.edu.unicundi.ejb.exceptions.IntegrityException;
@@ -9,6 +11,7 @@ import co.edu.unicundi.ejb.repository.IMedicoRepository;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import org.modelmapper.ModelMapper;
 
 /**
  * @author Daniel Zambrano
@@ -19,6 +22,8 @@ public class MedicoServiceImpl implements IMedicoService {
     
     @EJB
     private IMedicoRepository repository;
+    
+    ModelMapper modelMapper = new ModelMapper();
 
     @Override
     public List<Medico> buscar() {
@@ -26,12 +31,21 @@ public class MedicoServiceImpl implements IMedicoService {
     }
 
     @Override
-    public Medico buscarPorId(Integer id) throws ModelNotFoundException {
+    public MedicoDto buscarPorId(Integer id, boolean details) throws ModelNotFoundException {
         Medico medico = repository.find(id);
         if (medico == null){
             throw new ModelNotFoundException("No existe un médico con el id enviado");
         }
-        return medico;
+        MedicoDto medicoDTO = modelMapper.map(medico, MedicoDto.class);
+        if (details){
+            for(ConsultaDto c : medicoDTO.getConsultas()){
+                c.setMedico(null);
+            }
+        } else {
+            medicoDTO.setConsultas(null);
+            medicoDTO.setDireccion(null);
+        }
+        return medicoDTO;
     }
 
     @Override
@@ -39,7 +53,8 @@ public class MedicoServiceImpl implements IMedicoService {
         if (medico == null){
             throw new EmptyModelException("El objeto médico está vacío");
         }
-        if (repository.findByEmail(medico.getCorreo())){
+        boolean emailExists = repository.findByEmail(medico.getCorreo(), 0);
+        if (emailExists){
             throw new IntegrityException("Ya existe un médico con el correo enviado");
         }
         medico.getDireccion().setMedico(medico);
@@ -54,11 +69,12 @@ public class MedicoServiceImpl implements IMedicoService {
         if (medico.getId() == null){
             throw new ModelNotFoundException("No existe un médico con el id enviado");
         }
-        Medico medicoEntity = this.buscarPorId(medico.getId());
+        Medico medicoEntity = repository.find(medico.getId());
         if (medicoEntity == null){
             throw new ModelNotFoundException("No existe un médico con el id enviado");
         }
-        if (repository.findByEmail(medico.getCorreo())){
+        boolean emailExists = repository.findByEmail(medico.getCorreo(), medico.getId());
+        if (emailExists){
             throw new IntegrityException("Ya existe un médico con el correo enviado");
         }
         // Actualizar los atributos del médico y de la dirección
@@ -76,7 +92,7 @@ public class MedicoServiceImpl implements IMedicoService {
 
     @Override
     public void eliminar(Integer id) throws ModelNotFoundException {
-        Medico medico = this.buscarPorId(id);
+        Medico medico = repository.find(id);
         if (medico == null){
             throw new ModelNotFoundException("No existe un médico con el id enviado");
         }

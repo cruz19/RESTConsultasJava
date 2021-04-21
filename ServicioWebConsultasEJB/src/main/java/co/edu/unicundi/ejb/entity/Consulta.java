@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -30,7 +31,9 @@ import org.codehaus.jackson.annotate.JsonProperty;
  */
 @Entity
 @Table(name = "consulta")
-@NamedQueries({})
+@NamedQueries({
+    @NamedQuery(name = "Consulta.findAll", query = "SELECT c FROM Consulta c")
+})
 public class Consulta implements Serializable {
     private static final long serialVersionUID = 1L;
     

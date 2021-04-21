@@ -33,7 +33,8 @@ import org.codehaus.jackson.annotate.JsonProperty;
 @Entity
 @Table(name = "medico")
 @NamedQueries({
-    @NamedQuery(name = "Medico.findByEmail", query = "SELECT COUNT(m) FROM Medico m WHERE m.correo = :email")
+    @NamedQuery(name = "Medico.findAll", query = "SELECT m FROM Medico m"),
+    @NamedQuery(name = "Medico.findByEmail", query = "SELECT COUNT(m) FROM Medico m WHERE (:id = 0 OR m.id != :id) AND m.correo = :email")
 })
 public class Medico implements Serializable{
     private static final long serialVersionUID = 1L;
