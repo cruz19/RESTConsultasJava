@@ -4,10 +4,12 @@ co\edu\unicundi\serviciowebconsultas\exceptions\filters\NotFoundExceptionFilter.
 co\edu\unicundi\serviciowebconsultas\exceptions\filters\IntegrityExceptionFilter.class
 co\edu\unicundi\serviciowebconsultas\exceptions\filters\NotAllowedExceptionFilter.class
 co\edu\unicundi\serviciowebconsultas\controllers\ConsultasController.class
+co\edu\unicundi\serviciowebconsultas\controllers\MedicosController.class
 co\edu\unicundi\serviciowebconsultas\exceptions\filters\ExceptionFilter.class
 co\edu\unicundi\serviciowebconsultas\exceptions\filters\NullPointerExceptionFilter.class
 co\edu\unicundi\serviciowebconsultas\exceptions\filters\WebApplicationExceptionFilter.class
 co\edu\unicundi\serviciowebconsultas\exceptions\filters\BadRequestExceptionFilter.class
+co\edu\unicundi\serviciowebconsultas\exceptions\filters\TransactionRolledbackLocalExceptionFilter.class
 co\edu\unicundi\serviciowebconsultas\exceptions\filters\ConstraintViolationExceptionFilter.class
 co\edu\unicundi\serviciowebconsultas\exceptions\filters\EmptyModelExceptionFilter.class
 co\edu\unicundi\serviciowebconsultas\exceptions\filters\NotSupportedExceptionFilter.class
