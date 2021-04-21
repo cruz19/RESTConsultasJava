@@ -1,14 +1,21 @@
 package co.edu.unicundi.serviciowebconsultas.controllers;
 
-import co.edu.unicundi.ejb.entity.Consulta;
-import co.edu.unicundi.ejb.entity.DetalleConsulta;
+import co.edu.unicundi.ejb.entity.Medico;
 import co.edu.unicundi.ejb.exceptions.EmptyModelException;
+import co.edu.unicundi.ejb.exceptions.IntegrityException;
 import co.edu.unicundi.ejb.exceptions.ModelNotFoundException;
-import co.edu.unicundi.ejb.interfaces.IConsultaService;
+import co.edu.unicundi.ejb.interfaces.IMedicoService;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.validation.Valid;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -17,16 +24,15 @@ import javax.ws.rs.core.Response;
  * @author Stiven Cruz
  * @author Daniel Zambrano
  */
-@Path("/consultas")
-public class ConsultasController {
-    
+@Path("/medicos")
+public class MedicosController {
     @EJB
-    private IConsultaService consultaService;
+    private IMedicoService medicoService;
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response listar() {
-        List<Consulta> consultas = consultaService.buscar();
+        List<Medico> consultas = medicoService.buscar();
         return Response
                 .status(Response.Status.OK)
                 .entity(consultas)
@@ -37,23 +43,18 @@ public class ConsultasController {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response buscarPorId(@PathParam("id") int id) throws ModelNotFoundException{
-        Consulta consulta = consultaService.buscarPorId(id);
-        if(consulta.getDetallesConsulta() != null) {
-            for (DetalleConsulta dc : consulta.getDetallesConsulta()) {
-                dc.setConsulta(null);
-            }
-        }
+        Medico medico = medicoService.buscarPorId(id);
         return Response
                 .status(Response.Status.OK)
-                .entity(consulta)
+                .entity(medico)
                 .build();
     }
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response agregar(@Valid Consulta consulta) throws EmptyModelException{
-        consultaService.guardar(consulta);
+    public Response agregar(@Valid Medico medico) throws EmptyModelException, IntegrityException{
+        medicoService.guardar(medico);
         return Response
             .status(Response.Status.CREATED)
             .build();
@@ -62,8 +63,8 @@ public class ConsultasController {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response actualizar(@Valid Consulta consulta) throws EmptyModelException, ModelNotFoundException{
-        consultaService.actualizar(consulta);
+    public Response actualizar(@Valid Medico medico) throws EmptyModelException, ModelNotFoundException, IntegrityException{
+        medicoService.actualizar(medico);
         return Response
            .status(Response.Status.OK)
            .build();
@@ -72,7 +73,7 @@ public class ConsultasController {
     @DELETE
     @Path("{id}")
     public Response eliminar(@PathParam("id") int id) throws ModelNotFoundException{
-        consultaService.eliminar(id);
+        medicoService.eliminar(id);
         return Response
                 .status(Response.Status.NO_CONTENT)
                 .build();
