@@ -10,9 +10,9 @@ import javax.ejb.Local;
  */
 @Local
 public interface IRepository<T> {
-    public List<T> buscar();
-    public T buscarPorId(Integer id);
-    public void guardar(T entity);
-    public void actualizar(T entity);
-    public void eliminar(T entity);
+    public List<T> findAll();
+    public T find(Object id);
+    public void create(T entity);
+    public void edit(T entity);
+    public void remove(T entity);
 }

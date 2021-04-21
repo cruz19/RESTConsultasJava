@@ -9,5 +9,5 @@ import javax.ejb.Local;
  */
 @Local
 public interface IMedicoRepository extends IRepository<Medico> {
-    public Medico buscarPorCorreo(String correo);
+    public boolean findByEmail(String email);
 }

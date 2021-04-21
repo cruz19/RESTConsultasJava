@@ -2,8 +2,8 @@ C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos 
 C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultasEJB\src\main\java\co\edu\unicundi\ejb\interfaces\IMedicoService.java
 C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultasEJB\src\main\java\co\edu\unicundi\ejb\service\MedicoServiceImpl.java
 C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultasEJB\src\main\java\co\edu\unicundi\ejb\repository\IMedicoRepository.java
+C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultasEJB\src\main\java\co\edu\unicundi\ejb\repository\impl\ConsultaRepository.java
 C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultasEJB\src\main\java\co\edu\unicundi\ejb\repository\impl\Repository.java
-C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultasEJB\src\main\java\co\edu\unicundi\ejb\repository\impl\ConsultaRepositoryImpl.java
 C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultasEJB\src\main\java\co\edu\unicundi\ejb\repository\impl\MedicoRepository.java
 C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultasEJB\src\main\java\co\edu\unicundi\ejb\service\ConsultaServiceImpl.java
 C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultasEJB\src\main\java\co\edu\unicundi\ejb\repository\IRepository.java

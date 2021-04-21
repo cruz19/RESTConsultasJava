@@ -1,6 +1,9 @@
 package co.edu.unicundi.ejb.entity;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,10 +13,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonManagedReference;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  * @author Steven Cruz
@@ -22,10 +33,11 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "medico")
 @NamedQueries({
-    @NamedQuery(name = "Medico.listarTodos", query = "SELECT m FROM Medico m"),
-    @NamedQuery(name = "Medico.buscarPorCorreo", query = "SELECT m FROM Medico m WHERE m.correo = :correo")
+    @NamedQuery(name = "Medico.findByEmail", query = "SELECT COUNT(m) FROM Medico m WHERE m.correo = :email")
 })
 public class Medico implements Serializable{
+    private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -43,11 +55,26 @@ public class Medico implements Serializable{
     @Column(name = "correo", nullable = false, length = 60, unique = true)
     @NotNull(message = "El correo es requerido")
     @Size(min = 3, max = 60, message = "El correo debe tener entre 3 y 60 caracteres")
+    @Pattern(regexp = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$", message = "El correo no es válido")
     private String correo;
     
-    @NotNull(message = "Objeto direccion es requerido")
+    @Column(name = "fecha_nacimiento", nullable = false)
+    @NotNull(message = "La fecha de nacimiento es requerida")
+    @Past(message = "La fecha de nacimiento no puede ser actual ni futura")
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date fechaNacimiento;
+    
+    @NotNull(message = "Objeto dirección es requerido")
     @OneToOne(mappedBy = "medico", cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.LAZY)
     private Direccion direccion;
+    
+    @OneToMany(mappedBy = "medico", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Consulta> consultas;
+    
+    @Transient
+    @JsonProperty("fechaNacimiento")
+    private String fechaNacimientoFormat;
 
     public Integer getId() {
         return id;
@@ -81,11 +108,37 @@ public class Medico implements Serializable{
         this.correo = correo;
     }
 
+    @JsonIgnore
+    public Date getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
     public Direccion getDireccion() {
         return direccion;
     }
 
     public void setDireccion(Direccion direccion) {
         this.direccion = direccion;
+    }
+
+    public List<Consulta> getConsultas() {
+        return consultas;
+    }
+
+    public void setConsultas(List<Consulta> consultas) {
+        this.consultas = consultas;
+    }
+
+    public String getFechaNacimientoFormat() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return formatter.format(fechaNacimiento);
+    }
+
+    public void setFechaNacimientoFormat(String fechaNacimientoFormat) {
+        this.fechaNacimientoFormat = fechaNacimientoFormat;
     }
 }

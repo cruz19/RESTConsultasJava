@@ -10,6 +10,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  * @author Steven Cruz
@@ -18,8 +19,11 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "direccion")
 public class Direccion implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
     @Id
     @Column(name = "id")
+    @JsonIgnore
     private Integer id;
     
     @Column(name = "direccion_detallada", nullable = false, length = 25)
@@ -36,9 +40,10 @@ public class Direccion implements Serializable {
     @NotNull(message = "El código postal es requerido")
     @Size(max = 6, message = "El código postal no puede tener más de 6 caracteres")
     private String codigoPostal;
-    
+   
     @OneToOne
     @MapsId
+    @JsonIgnore
     private Medico medico;
 
     public Integer getId() {

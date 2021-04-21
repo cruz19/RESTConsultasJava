@@ -22,12 +22,12 @@ public class MedicoServiceImpl implements IMedicoService {
 
     @Override
     public List<Medico> buscar() {
-        return repository.buscar();
+        return repository.findAll();
     }
 
     @Override
     public Medico buscarPorId(Integer id) throws ModelNotFoundException {
-        Medico medico = repository.buscarPorId(id);
+        Medico medico = repository.find(id);
         if (medico == null){
             throw new ModelNotFoundException("No existe un médico con el id enviado");
         }
@@ -39,12 +39,11 @@ public class MedicoServiceImpl implements IMedicoService {
         if (medico == null){
             throw new EmptyModelException("El objeto médico está vacío");
         }
-        Medico medicoPorCorreo = repository.buscarPorCorreo(medico.getCorreo());
-        if (medicoPorCorreo != null){
+        if (repository.findByEmail(medico.getCorreo())){
             throw new IntegrityException("Ya existe un médico con el correo enviado");
         }
         medico.getDireccion().setMedico(medico);
-        repository.guardar(medico);
+        repository.create(medico);
     }
 
     @Override
@@ -59,8 +58,7 @@ public class MedicoServiceImpl implements IMedicoService {
         if (medicoEntity == null){
             throw new ModelNotFoundException("No existe un médico con el id enviado");
         }
-        Medico medicoPorCorreo = repository.buscarPorCorreo(medico.getCorreo());
-        if (medicoPorCorreo != null && !medico.getId().equals(medicoPorCorreo.getId())){
+        if (repository.findByEmail(medico.getCorreo())){
             throw new IntegrityException("Ya existe un médico con el correo enviado");
         }
         // Actualizar los atributos del médico y de la dirección
@@ -69,10 +67,11 @@ public class MedicoServiceImpl implements IMedicoService {
         medicoEntity.setCorreo(medico.getCorreo());
         
         if(medico.getDireccion() != null) {
+            medicoEntity.getDireccion().setDireccionDetallada(medico.getDireccion().getDireccionDetallada());
             medicoEntity.getDireccion().setBarrio(medico.getDireccion().getBarrio());
             medicoEntity.getDireccion().setCodigoPostal(medico.getDireccion().getCodigoPostal());
         }
-        repository.actualizar(medico);
+        repository.edit(medicoEntity);
     }
 
     @Override
@@ -81,7 +80,7 @@ public class MedicoServiceImpl implements IMedicoService {
         if (medico == null){
             throw new ModelNotFoundException("No existe un médico con el id enviado");
         }
-        repository.eliminar(medico);
+        repository.remove(medico);
     }
     
 }

@@ -9,7 +9,6 @@ co\edu\unicundi\serviciowebconsultas\exceptions\filters\ExceptionFilter.class
 co\edu\unicundi\serviciowebconsultas\exceptions\filters\NullPointerExceptionFilter.class
 co\edu\unicundi\serviciowebconsultas\exceptions\filters\WebApplicationExceptionFilter.class
 co\edu\unicundi\serviciowebconsultas\exceptions\filters\BadRequestExceptionFilter.class
-co\edu\unicundi\serviciowebconsultas\exceptions\filters\TransactionRolledbackLocalExceptionFilter.class
 co\edu\unicundi\serviciowebconsultas\exceptions\filters\ConstraintViolationExceptionFilter.class
 co\edu\unicundi\serviciowebconsultas\exceptions\filters\EmptyModelExceptionFilter.class
 co\edu\unicundi\serviciowebconsultas\exceptions\filters\NotSupportedExceptionFilter.class

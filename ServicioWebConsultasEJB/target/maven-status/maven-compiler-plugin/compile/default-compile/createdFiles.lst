@@ -5,11 +5,11 @@ co\edu\unicundi\ejb\entity\DetalleConsulta_.class
 co\edu\unicundi\ejb\service\ConsultaServiceImpl.class
 co\edu\unicundi\ejb\entity\Medico_.class
 co\edu\unicundi\ejb\exceptions\IntegrityException.class
-co\edu\unicundi\ejb\repository\impl\ConsultaRepositoryImpl.class
 co\edu\unicundi\ejb\service\MedicoServiceImpl.class
 co\edu\unicundi\ejb\entity\Direccion_.class
 co\edu\unicundi\ejb\exceptions\ModelNotFoundException.class
 co\edu\unicundi\ejb\entity\DetalleConsulta.class
+co\edu\unicundi\ejb\repository\impl\ConsultaRepository.class
 co\edu\unicundi\ejb\repository\impl\MedicoRepository.class
 co\edu\unicundi\ejb\entity\Consulta.class
 co\edu\unicundi\ejb\exceptions\EmptyModelException.class

@@ -22,12 +22,12 @@ public class ConsultaServiceImpl implements IConsultaService {
 
     @Override
     public List<Consulta> buscar() {
-        return repository.buscar();
+        return repository.findAll();
     }
 
     @Override
     public Consulta buscarPorId(Integer id) throws ModelNotFoundException {
-        Consulta consulta = repository.buscarPorId(id);
+        Consulta consulta = repository.find(id);
         if (consulta == null){
             throw new ModelNotFoundException("No existe una consulta con el id enviado");
         }
@@ -44,7 +44,8 @@ public class ConsultaServiceImpl implements IConsultaService {
                 dc.setConsulta(consulta);
             }
         }
-        repository.guardar(consulta);
+        consulta.getMedico().getDireccion().setMedico(consulta.getMedico());
+        repository.create(consulta);
     }
 
     @Override
@@ -55,25 +56,38 @@ public class ConsultaServiceImpl implements IConsultaService {
         if (consulta.getId() == null){
             throw new ModelNotFoundException("No existe una consulta con el id enviado");
         }
-        Consulta consultaPorId = repository.buscarPorId(consulta.getId());
-        if (consultaPorId == null){
+        Consulta consultaEntity = this.buscarPorId(consulta.getId());
+        if (consultaEntity == null){
             throw new ModelNotFoundException("No existe una consulta con el id enviado");
         }
+        // Actualizar consulta
+        consultaEntity.setFecha(consulta.getFecha());
+        // Detalles consulta
         if(consulta.getDetallesConsulta() != null) {
             for (DetalleConsulta dc : consulta.getDetallesConsulta()) {
                 dc.setConsulta(consulta);
             }
+            consultaEntity.setDetallesConsulta(consulta.getDetallesConsulta());
         }
-        repository.actualizar(consulta);
+        // Médico
+        if (consulta.getMedico() != null){
+            consultaEntity.setMedico(consulta.getMedico());
+            // Dirección
+            if (consulta.getMedico().getDireccion() != null){
+                consultaEntity.getMedico().setDireccion(consulta.getMedico().getDireccion());
+                consultaEntity.getMedico().getDireccion().setMedico(consultaEntity.getMedico());
+            }
+        }
+        repository.edit(consultaEntity);
     }
 
     @Override
     public void eliminar(Integer id) throws ModelNotFoundException {
-        Consulta consulta = repository.buscarPorId(id);
+        Consulta consulta = this.buscarPorId(id);
         if (consulta == null){
             throw new ModelNotFoundException("No existe una consulta con el id enviado");
         }
-        repository.eliminar(consulta);
+        repository.remove(consulta);
     }
     
 }
