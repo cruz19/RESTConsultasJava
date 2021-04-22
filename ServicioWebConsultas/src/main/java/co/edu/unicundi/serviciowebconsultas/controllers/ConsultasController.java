@@ -49,7 +49,7 @@ public class ConsultasController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response agregar(@Valid Consulta consulta) throws EmptyModelException, IntegrityException{
+    public Response agregar(@Valid Consulta consulta) throws EmptyModelException, IntegrityException, ModelNotFoundException{
         consultaService.guardar(consulta);
         return Response
             .status(Response.Status.CREATED)

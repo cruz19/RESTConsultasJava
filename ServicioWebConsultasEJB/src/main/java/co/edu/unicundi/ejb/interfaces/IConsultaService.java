@@ -16,7 +16,7 @@ import javax.ejb.Local;
 public interface IConsultaService {
     public List<Consulta> buscar();
     public ConsultaDto buscarPorId(Integer id) throws ModelNotFoundException;
-    public void guardar(Consulta consulta) throws EmptyModelException, IntegrityException;
+    public void guardar(Consulta consulta) throws EmptyModelException, ModelNotFoundException, IntegrityException;
     public void actualizar(Consulta consulta) throws EmptyModelException, ModelNotFoundException, IntegrityException;
     public void eliminar(Integer id) throws ModelNotFoundException;
 }

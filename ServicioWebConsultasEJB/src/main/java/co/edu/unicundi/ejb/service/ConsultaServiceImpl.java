@@ -3,6 +3,7 @@ package co.edu.unicundi.ejb.service;
 import co.edu.unicundi.ejb.dtos.ConsultaDto;
 import co.edu.unicundi.ejb.entity.Consulta;
 import co.edu.unicundi.ejb.entity.DetalleConsulta;
+import co.edu.unicundi.ejb.entity.Medico;
 import co.edu.unicundi.ejb.exceptions.EmptyModelException;
 import co.edu.unicundi.ejb.exceptions.IntegrityException;
 import co.edu.unicundi.ejb.exceptions.ModelNotFoundException;
@@ -45,7 +46,7 @@ public class ConsultaServiceImpl implements IConsultaService {
     }
 
     @Override
-    public void guardar(Consulta consulta) throws EmptyModelException, IntegrityException {
+    public void guardar(Consulta consulta) throws EmptyModelException, ModelNotFoundException, IntegrityException {
         if (consulta == null){
             throw new EmptyModelException("El objeto consulta está vacío");
         }
@@ -54,14 +55,13 @@ public class ConsultaServiceImpl implements IConsultaService {
                 dc.setConsulta(consulta);
             }
         }
-        if (consulta.getMedico() != null){
-            boolean emailExists = medicoRepository.findByEmail(consulta.getMedico().getCorreo(), -1);
-            if (emailExists){
-                throw new IntegrityException("Ya existe un médico con el correo enviado");
+        if (consulta.getMedico().getId() != null){
+            Medico medico = medicoRepository.find(consulta.getMedico().getId());
+            if (medico == null){
+                throw new ModelNotFoundException("No existe un médico con el id enviado");
             }
-            if (consulta.getMedico().getDireccion() != null){
-                consulta.getMedico().getDireccion().setMedico(consulta.getMedico());
-            }   
+            consulta.setMedico(medico);
+            medico.getConsultas().add(consulta);
         }
         consultaRepository.create(consulta);
     }
@@ -88,17 +88,12 @@ public class ConsultaServiceImpl implements IConsultaService {
             consultaEntity.setDetallesConsulta(consulta.getDetallesConsulta());
         }
         // Médico
-        if (consulta.getMedico() != null){
-            boolean emailExists = medicoRepository.findByEmail(consulta.getMedico().getCorreo(), -1);
-            if (emailExists){
-                throw new IntegrityException("Ya existe un médico con el correo enviado");
+        if (consulta.getMedico().getId() != null){
+            Medico medico = medicoRepository.find(consulta.getMedico().getId());
+            if (medico == null){
+                throw new ModelNotFoundException("No existe un médico con el id enviado");
             }
-            consultaEntity.setMedico(consulta.getMedico());
-            // Dirección
-            if (consulta.getMedico().getDireccion() != null){
-                consultaEntity.getMedico().setDireccion(consulta.getMedico().getDireccion());
-                consultaEntity.getMedico().getDireccion().setMedico(consultaEntity.getMedico());
-            }
+            consultaEntity.setMedico(medico);
         }
         consultaRepository.edit(consultaEntity);
     }

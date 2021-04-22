@@ -47,8 +47,8 @@ public class Consulta implements Serializable {
     @OneToMany(mappedBy = "consulta", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<DetalleConsulta> detallesConsulta;
     
-    @NotNull(message = "Objeto médico es requerido")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @NotNull(message = "El médico es requerido")
+    @ManyToOne
     @JoinColumn(name = "medico_id", nullable = false)
     @JsonIgnore
     private Medico medico;
