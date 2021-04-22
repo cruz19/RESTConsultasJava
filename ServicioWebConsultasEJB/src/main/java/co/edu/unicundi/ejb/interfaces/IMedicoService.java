@@ -1,5 +1,6 @@
 package co.edu.unicundi.ejb.interfaces;
 
+import co.edu.unicundi.ejb.dtos.MedicoDto;
 import co.edu.unicundi.ejb.entity.Medico;
 import co.edu.unicundi.ejb.exceptions.EmptyModelException;
 import co.edu.unicundi.ejb.exceptions.IntegrityException;
@@ -14,7 +15,7 @@ import javax.ejb.Local;
 @Local
 public interface IMedicoService {
     public List<Medico> buscar();
-    public Medico buscarPorId(Integer id) throws ModelNotFoundException;
+    public MedicoDto buscarPorId(Integer id, boolean details) throws ModelNotFoundException;
     public void guardar(Medico medico) throws EmptyModelException, IntegrityException;
     public void actualizar(Medico medico) throws EmptyModelException, ModelNotFoundException, IntegrityException;
     public void eliminar(Integer id) throws ModelNotFoundException;

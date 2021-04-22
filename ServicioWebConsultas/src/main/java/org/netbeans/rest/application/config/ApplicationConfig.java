@@ -41,7 +41,6 @@ public class ApplicationConfig extends Application {
         resources.add(co.edu.unicundi.serviciowebconsultas.exceptions.filters.NotFoundExceptionFilter.class);
         resources.add(co.edu.unicundi.serviciowebconsultas.exceptions.filters.NotSupportedExceptionFilter.class);
         resources.add(co.edu.unicundi.serviciowebconsultas.exceptions.filters.NullPointerExceptionFilter.class);
-        resources.add(co.edu.unicundi.serviciowebconsultas.exceptions.filters.TransactionRolledbackLocalExceptionFilter.class);
         resources.add(co.edu.unicundi.serviciowebconsultas.exceptions.filters.WebApplicationExceptionFilter.class);
     }
     

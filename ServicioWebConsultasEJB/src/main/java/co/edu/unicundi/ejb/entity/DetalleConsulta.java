@@ -13,7 +13,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonBackReference;
 
 /**
  * @author Stiven cruz
@@ -42,8 +42,7 @@ public class DetalleConsulta implements Serializable {
     
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_consulta", nullable = false)
-    // @JsonBackReference
-    @JsonIgnore
+    @JsonBackReference
     private Consulta consulta;
 
     public Integer getId() {

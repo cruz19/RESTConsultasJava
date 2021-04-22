@@ -1,8 +1,10 @@
 package co.edu.unicundi.serviciowebconsultas.controllers;
 
+import co.edu.unicundi.ejb.dtos.ConsultaDto;
 import co.edu.unicundi.ejb.entity.Consulta;
 import co.edu.unicundi.ejb.entity.DetalleConsulta;
 import co.edu.unicundi.ejb.exceptions.EmptyModelException;
+import co.edu.unicundi.ejb.exceptions.IntegrityException;
 import co.edu.unicundi.ejb.exceptions.ModelNotFoundException;
 import co.edu.unicundi.ejb.interfaces.IConsultaService;
 import java.util.List;
@@ -37,12 +39,7 @@ public class ConsultasController {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response buscarPorId(@PathParam("id") int id) throws ModelNotFoundException{
-        Consulta consulta = consultaService.buscarPorId(id);
-        if(consulta.getDetallesConsulta() != null) {
-            for (DetalleConsulta dc : consulta.getDetallesConsulta()) {
-                dc.setConsulta(null);
-            }
-        }
+        ConsultaDto consulta = consultaService.buscarPorId(id);
         return Response
                 .status(Response.Status.OK)
                 .entity(consulta)
@@ -52,7 +49,7 @@ public class ConsultasController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response agregar(@Valid Consulta consulta) throws EmptyModelException{
+    public Response agregar(@Valid Consulta consulta) throws EmptyModelException, IntegrityException{
         consultaService.guardar(consulta);
         return Response
             .status(Response.Status.CREATED)
@@ -62,7 +59,7 @@ public class ConsultasController {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response actualizar(@Valid Consulta consulta) throws EmptyModelException, ModelNotFoundException{
+    public Response actualizar(@Valid Consulta consulta) throws EmptyModelException, ModelNotFoundException, IntegrityException{
         consultaService.actualizar(consulta);
         return Response
            .status(Response.Status.OK)

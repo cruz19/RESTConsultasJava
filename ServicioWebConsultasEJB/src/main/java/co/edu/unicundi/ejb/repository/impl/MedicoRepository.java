@@ -3,7 +3,8 @@ package co.edu.unicundi.ejb.repository.impl;
 import co.edu.unicundi.ejb.entity.Medico;
 import co.edu.unicundi.ejb.repository.IMedicoRepository;
 import javax.ejb.Stateless;
-import javax.persistence.NoResultException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
@@ -12,15 +13,26 @@ import javax.persistence.Query;
  */
 @Stateless
 public class MedicoRepository extends Repository<Medico> implements IMedicoRepository {
+    
+    @PersistenceContext(unitName = "co.edu.unicundi_ConsultaPU")
+    protected EntityManager em;
+    
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
+    }
+    
+    public MedicoRepository(){
+        super(Medico.class);
+    }
 
     @Override
-    public Medico buscarPorCorreo(String correo) {
-        try{
-            Query query = em.createNamedQuery("Medico.buscarPorCorreo", Medico.class);
-            query.setParameter("correo", correo);
-            return (Medico) query.getSingleResult();
-        }catch(NoResultException e){
-            return null;
-        }
+    public boolean findByEmail(String email, int id) {
+        Query query = em.createNamedQuery("Medico.findByEmail");
+        query.setParameter("email", email);
+        query.setParameter("id", id);
+        int count = ((Number)query.getSingleResult()).intValue();
+        System.out.println("count = " + count);
+        return count > 0;
     }
 }
