@@ -53,7 +53,7 @@ public class MedicoServiceImpl implements IMedicoService {
         if (medico == null){
             throw new EmptyModelException("El objeto médico está vacío");
         }
-        boolean emailExists = repository.findByEmail(medico.getCorreo(), 0);
+        boolean emailExists = repository.findByEmail(medico.getCorreo(), -1);
         if (emailExists){
             throw new IntegrityException("Ya existe un médico con el correo enviado");
         }
@@ -81,6 +81,7 @@ public class MedicoServiceImpl implements IMedicoService {
         medicoEntity.setNombre(medico.getNombre());
         medicoEntity.setApellido(medico.getApellido());
         medicoEntity.setCorreo(medico.getCorreo());
+        medicoEntity.setFechaNacimiento(medico.getFechaNacimiento());
         
         if(medico.getDireccion() != null) {
             medicoEntity.getDireccion().setDireccionDetallada(medico.getDireccion().getDireccionDetallada());

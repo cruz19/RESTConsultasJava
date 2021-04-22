@@ -23,7 +23,6 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonManagedReference;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
@@ -34,7 +33,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 @Table(name = "medico")
 @NamedQueries({
     @NamedQuery(name = "Medico.findAll", query = "SELECT m FROM Medico m"),
-    @NamedQuery(name = "Medico.findByEmail", query = "SELECT COUNT(m) FROM Medico m WHERE (:id = 0 OR m.id != :id) AND m.correo = :email")
+    @NamedQuery(name = "Medico.findByEmail", query = "SELECT COUNT(m) FROM Medico m WHERE (:id = -1 OR m.id != :id) AND m.correo = :email")
 })
 public class Medico implements Serializable{
     private static final long serialVersionUID = 1L;
@@ -65,12 +64,12 @@ public class Medico implements Serializable{
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date fechaNacimiento;
     
-    @NotNull(message = "Objeto dirección es requerido")
+    @NotNull(message = "El objeto dirección es requerido")
     @OneToOne(mappedBy = "medico", cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.LAZY)
     private Direccion direccion;
     
     @OneToMany(mappedBy = "medico", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference
+    // @JsonManagedReference
     private List<Consulta> consultas;
     
     @Transient

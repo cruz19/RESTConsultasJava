@@ -55,11 +55,13 @@ public class ConsultaServiceImpl implements IConsultaService {
             }
         }
         if (consulta.getMedico() != null){
-            boolean emailExists = medicoRepository.findByEmail(consulta.getMedico().getCorreo(), 0);
+            boolean emailExists = medicoRepository.findByEmail(consulta.getMedico().getCorreo(), -1);
             if (emailExists){
                 throw new IntegrityException("Ya existe un médico con el correo enviado");
             }
-            consulta.getMedico().getDireccion().setMedico(consulta.getMedico());   
+            if (consulta.getMedico().getDireccion() != null){
+                consulta.getMedico().getDireccion().setMedico(consulta.getMedico());
+            }   
         }
         consultaRepository.create(consulta);
     }
@@ -81,17 +83,16 @@ public class ConsultaServiceImpl implements IConsultaService {
         // Detalles consulta
         if(consulta.getDetallesConsulta() != null) {
             for (DetalleConsulta dc : consulta.getDetallesConsulta()) {
-                dc.setConsulta(consulta);
+                dc.setConsulta(consultaEntity);
             }
             consultaEntity.setDetallesConsulta(consulta.getDetallesConsulta());
         }
         // Médico
         if (consulta.getMedico() != null){
-            boolean emailExists = medicoRepository.findByEmail(consulta.getMedico().getCorreo(), 0);
+            boolean emailExists = medicoRepository.findByEmail(consulta.getMedico().getCorreo(), -1);
             if (emailExists){
                 throw new IntegrityException("Ya existe un médico con el correo enviado");
             }
-            
             consultaEntity.setMedico(consulta.getMedico());
             // Dirección
             if (consulta.getMedico().getDireccion() != null){
