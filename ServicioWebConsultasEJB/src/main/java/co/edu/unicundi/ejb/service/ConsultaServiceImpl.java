@@ -3,7 +3,6 @@ package co.edu.unicundi.ejb.service;
 import co.edu.unicundi.ejb.dtos.ConsultaDto;
 import co.edu.unicundi.ejb.entity.Consulta;
 import co.edu.unicundi.ejb.entity.DetalleConsulta;
-import co.edu.unicundi.ejb.entity.Direccion;
 import co.edu.unicundi.ejb.exceptions.EmptyModelException;
 import co.edu.unicundi.ejb.exceptions.IntegrityException;
 import co.edu.unicundi.ejb.exceptions.ModelNotFoundException;

@@ -23,7 +23,6 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonManagedReference;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
@@ -70,7 +69,7 @@ public class Medico implements Serializable{
     private Direccion direccion;
     
     @OneToMany(mappedBy = "medico", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference
+    // @JsonManagedReference
     private List<Consulta> consultas;
     
     @Transient

@@ -20,9 +20,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
-import org.codehaus.jackson.annotate.JsonBackReference;
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonManagedReference;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
@@ -47,13 +45,12 @@ public class Consulta implements Serializable {
     private Date fecha;    
     
     @OneToMany(mappedBy = "consulta", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference
     private List<DetalleConsulta> detallesConsulta;
     
     @NotNull(message = "Objeto médico es requerido")
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "medico_id", nullable = false)
-    @JsonBackReference
+    @JsonIgnore
     private Medico medico;
     
     @Transient
