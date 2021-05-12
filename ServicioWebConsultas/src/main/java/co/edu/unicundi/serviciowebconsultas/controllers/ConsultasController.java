@@ -1,13 +1,12 @@
 package co.edu.unicundi.serviciowebconsultas.controllers;
 
 import co.edu.unicundi.ejb.dtos.ConsultaDto;
+import co.edu.unicundi.ejb.dtos.PagedListDto;
 import co.edu.unicundi.ejb.entity.Consulta;
-import co.edu.unicundi.ejb.entity.DetalleConsulta;
 import co.edu.unicundi.ejb.exceptions.EmptyModelException;
 import co.edu.unicundi.ejb.exceptions.IntegrityException;
 import co.edu.unicundi.ejb.exceptions.ModelNotFoundException;
 import co.edu.unicundi.ejb.interfaces.IConsultaService;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -26,9 +25,10 @@ public class ConsultasController {
     private IConsultaService consultaService;
     
     @GET
+    @Path("{pageNumber}/{pageSize}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response listar() {
-        List<Consulta> consultas = consultaService.buscar();
+    public Response listar(@PathParam("pageNumber") int pageNumber, @PathParam("pageSize") int pageSize) {
+        PagedListDto consultas = consultaService.buscar(pageNumber, pageSize);
         return Response
                 .status(Response.Status.OK)
                 .entity(consultas)

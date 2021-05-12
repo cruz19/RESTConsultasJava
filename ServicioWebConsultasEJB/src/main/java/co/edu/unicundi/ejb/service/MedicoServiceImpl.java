@@ -2,16 +2,19 @@ package co.edu.unicundi.ejb.service;
 
 import co.edu.unicundi.ejb.dtos.ConsultaDto;
 import co.edu.unicundi.ejb.dtos.MedicoDto;
+import co.edu.unicundi.ejb.dtos.PagedListDto;
 import co.edu.unicundi.ejb.entity.Medico;
 import co.edu.unicundi.ejb.exceptions.EmptyModelException;
 import co.edu.unicundi.ejb.exceptions.IntegrityException;
 import co.edu.unicundi.ejb.exceptions.ModelNotFoundException;
 import co.edu.unicundi.ejb.interfaces.IMedicoService;
 import co.edu.unicundi.ejb.repository.IMedicoRepository;
+import java.lang.reflect.Type;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 
 /**
  * @author Daniel Zambrano
@@ -26,8 +29,14 @@ public class MedicoServiceImpl implements IMedicoService {
     ModelMapper modelMapper = new ModelMapper();
 
     @Override
-    public List<Medico> buscar() {
-        return repository.findAll();
+    public PagedListDto buscar(int pageNumber, int pageSize) {
+        // Listar
+        List<Medico> medicoList = repository.findAll(pageNumber, pageSize);
+        // Mapper
+        Type listType = new TypeToken<List<MedicoDto>>(){}.getType();
+        List<MedicoDto> medicoDtoList = modelMapper.map(medicoList, listType);
+        // PagedList
+        return new PagedListDto(medicoDtoList, repository.count(), pageNumber, pageSize);
     }
 
     @Override

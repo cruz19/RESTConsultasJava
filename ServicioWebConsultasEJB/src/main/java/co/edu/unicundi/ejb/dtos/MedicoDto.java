@@ -2,6 +2,7 @@ package co.edu.unicundi.ejb.dtos;
 
 import java.io.Serializable;
 import java.util.List;
+import org.codehaus.jackson.annotate.JsonManagedReference;
 
 /**
  * @author Steven Cruz
@@ -56,6 +57,7 @@ public class MedicoDto implements Serializable {
         this.direccion = direccion;
     }
 
+    @JsonManagedReference
     public List<ConsultaDto> getConsultas() {
         return consultas;
     }

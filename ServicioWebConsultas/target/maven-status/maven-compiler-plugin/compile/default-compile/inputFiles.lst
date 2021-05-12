@@ -2,6 +2,7 @@ C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos 
 C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultas\src\main\java\co\edu\unicundi\serviciowebconsultas\controllers\MedicosController.java
 C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultas\src\main\java\co\edu\unicundi\serviciowebconsultas\exceptions\filters\ExceptionFilter.java
 C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultas\src\main\java\co\edu\unicundi\serviciowebconsultas\controllers\ConsultasController.java
+C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultas\src\main\java\co\edu\unicundi\serviciowebconsultas\controllers\MedicosViewController.java
 C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultas\src\main\java\co\edu\unicundi\serviciowebconsultas\exceptions\filters\EmptyModelExceptionFilter.java
 C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultas\src\main\java\co\edu\unicundi\serviciowebconsultas\exceptions\filters\NullPointerExceptionFilter.java
 C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultas\src\main\java\co\edu\unicundi\serviciowebconsultas\exceptions\filters\NotSupportedExceptionFilter.java

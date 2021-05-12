@@ -10,10 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonBackReference;
 
 /**
  * @author Stiven cruz
@@ -21,7 +22,9 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  */
 @Entity
 @Table(name = "detalle_consulta")
-@NamedQueries({})
+@NamedQueries({
+    @NamedQuery(name = "DetalleConsulta.count", query = "SELECT COUNT(d) FROM DetalleConsulta d")
+})
 public class DetalleConsulta implements Serializable {
     private static final long serialVersionUID = 1L;
     
@@ -42,7 +45,6 @@ public class DetalleConsulta implements Serializable {
     
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_consulta", nullable = false)
-    @JsonIgnore
     private Consulta consulta;
 
     public Integer getId() {
@@ -69,6 +71,7 @@ public class DetalleConsulta implements Serializable {
         this.tratamiento = tratamiento;
     }
 
+    @JsonBackReference
     public Consulta getConsulta() {
         return consulta;
     }

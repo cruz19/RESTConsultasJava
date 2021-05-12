@@ -1,6 +1,7 @@
 package co.edu.unicundi.ejb.service;
 
 import co.edu.unicundi.ejb.dtos.ConsultaDto;
+import co.edu.unicundi.ejb.dtos.PagedListDto;
 import co.edu.unicundi.ejb.entity.Consulta;
 import co.edu.unicundi.ejb.entity.DetalleConsulta;
 import co.edu.unicundi.ejb.entity.Medico;
@@ -10,10 +11,12 @@ import co.edu.unicundi.ejb.exceptions.ModelNotFoundException;
 import co.edu.unicundi.ejb.interfaces.IConsultaService;
 import co.edu.unicundi.ejb.repository.IConsultaRepository;
 import co.edu.unicundi.ejb.repository.IMedicoRepository;
+import java.lang.reflect.Type;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 
 /**
  * @author Steven Cruz
@@ -30,8 +33,15 @@ public class ConsultaServiceImpl implements IConsultaService {
     ModelMapper modelMapper = new ModelMapper();
 
     @Override
-    public List<Consulta> buscar() {
-        return consultaRepository.findAll();
+    public PagedListDto buscar(int pageNumber, int pageSize) {
+        // Listar
+        List<Consulta> consultaList = consultaRepository.findAll(pageNumber, pageSize);
+        // Mapper
+        Type listType = new TypeToken<List<ConsultaDto>>(){}.getType();
+        List<ConsultaDto> consultaDtoList = modelMapper.map(consultaList, listType);
+        for(ConsultaDto c : consultaDtoList){ c.getMedico().setConsultas(null); }
+        // PagedList
+        return new PagedListDto(consultaDtoList, consultaRepository.count(), pageNumber, pageSize);
     }
 
     @Override

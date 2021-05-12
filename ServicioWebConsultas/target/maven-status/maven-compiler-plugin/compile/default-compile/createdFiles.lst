@@ -1,3 +1,4 @@
+co\edu\unicundi\serviciowebconsultas\controllers\MedicosViewController.class
 co\edu\unicundi\serviciowebconsultas\exceptions\filters\ModelNotFoundExceptionFilter.class
 org\netbeans\rest\application\config\ApplicationConfig.class
 co\edu\unicundi\serviciowebconsultas\exceptions\filters\NotFoundExceptionFilter.class

@@ -20,7 +20,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import org.codehaus.jackson.annotate.JsonBackReference;
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonManagedReference;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
@@ -30,7 +32,8 @@ import org.codehaus.jackson.annotate.JsonProperty;
 @Entity
 @Table(name = "consulta")
 @NamedQueries({
-    @NamedQuery(name = "Consulta.findAll", query = "SELECT c FROM Consulta c")
+    @NamedQuery(name = "Consulta.findAll", query = "SELECT c FROM Consulta c ORDER BY c.id"),
+    @NamedQuery(name = "Consulta.count", query = "SELECT COUNT(c) FROM Consulta c")
 })
 public class Consulta implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -50,7 +53,6 @@ public class Consulta implements Serializable {
     @NotNull(message = "El médico es requerido")
     @ManyToOne
     @JoinColumn(name = "medico_id", nullable = false)
-    @JsonIgnore
     private Medico medico;
     
     @Transient
@@ -74,6 +76,7 @@ public class Consulta implements Serializable {
         this.fecha = fecha;
     }
 
+    @JsonManagedReference
     public List<DetalleConsulta> getDetallesConsulta() {
         return detallesConsulta;
     }
@@ -82,6 +85,7 @@ public class Consulta implements Serializable {
         this.detallesConsulta = detallesConsulta;
     }
 
+    @JsonBackReference
     public Medico getMedico() {
         return medico;
     }

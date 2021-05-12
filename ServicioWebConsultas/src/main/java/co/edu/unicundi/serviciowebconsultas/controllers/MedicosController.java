@@ -1,6 +1,7 @@
 package co.edu.unicundi.serviciowebconsultas.controllers;
 
 import co.edu.unicundi.ejb.dtos.MedicoDto;
+import co.edu.unicundi.ejb.dtos.PagedListDto;
 import co.edu.unicundi.ejb.entity.Medico;
 import co.edu.unicundi.ejb.exceptions.EmptyModelException;
 import co.edu.unicundi.ejb.exceptions.IntegrityException;
@@ -17,7 +18,6 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -32,9 +32,10 @@ public class MedicosController {
     private IMedicoService medicoService;
     
     @GET
+    @Path("{pageNumber}/{pageSize}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response listar() {
-        List<Medico> consultas = medicoService.buscar();
+    public Response listar(@PathParam("pageNumber") int pageNumber, @PathParam("pageSize") int pageSize) {
+        PagedListDto consultas = medicoService.buscar(pageNumber, pageSize);
         return Response
                 .status(Response.Status.OK)
                 .entity(consultas)

@@ -1,6 +1,7 @@
 package co.edu.unicundi.ejb.dtos;
 
 import java.util.List;
+import org.codehaus.jackson.annotate.JsonBackReference;
 
 /**
  * @author Steven Cruz
@@ -19,7 +20,7 @@ public class ConsultaDto {
     public void setId(Integer id) {
         this.id = id;
     }
-
+    
     public List<DetalleConsultaDto> getDetallesConsulta() {
         return detallesConsulta;
     }
@@ -36,6 +37,7 @@ public class ConsultaDto {
         this.fechaFormat = fechaFormat;
     }
 
+    @JsonBackReference
     public MedicoDto getMedico() {
         return medico;
     }

@@ -32,7 +32,6 @@ public class MedicoRepository extends Repository<Medico> implements IMedicoRepos
         query.setParameter("email", email);
         query.setParameter("id", id);
         int count = ((Number)query.getSingleResult()).intValue();
-        System.out.println("count = " + count);
         return count > 0;
     }
 }

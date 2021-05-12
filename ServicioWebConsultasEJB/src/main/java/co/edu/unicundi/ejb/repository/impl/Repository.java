@@ -3,6 +3,7 @@ package co.edu.unicundi.ejb.repository.impl;
 import co.edu.unicundi.ejb.repository.IRepository;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 /**
@@ -21,10 +22,17 @@ public abstract class Repository<T> implements IRepository<T> {
     protected abstract EntityManager getEntityManager();
 
     @Override
-    public List<T> findAll() {
+    public List<T> findAll(int pageNumber, int pageSize) {
         getEntityManager().getEntityManagerFactory().getCache().evictAll();
+        
+        // Default values
+        pageNumber = pageNumber == 0 ? 1 : pageNumber;
+        pageSize = pageSize == 0 ? 10 : pageSize;
+
         String namedQuery = entityClass.getSimpleName() + ".findAll";
-        TypedQuery<T> query = getEntityManager().createNamedQuery(namedQuery, entityClass);
+        TypedQuery<T> query = getEntityManager().createNamedQuery(namedQuery, entityClass)
+                                                .setFirstResult((pageNumber - 1) * pageSize) // Skip
+                                                .setMaxResults(pageSize); // Take
         return (List<T>) query.getResultList();
     }
 
@@ -46,5 +54,12 @@ public abstract class Repository<T> implements IRepository<T> {
     @Override
     public void remove(T entity) {
         getEntityManager().remove(getEntityManager().merge(entity));
+    }
+    
+    @Override
+    public int count(){
+        String namedQuery = entityClass.getSimpleName() + ".count";
+        Query query = getEntityManager().createNamedQuery(namedQuery);
+        return ((Number)query.getSingleResult()).intValue();
     }
 }
