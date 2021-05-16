@@ -7,7 +7,6 @@ import co.edu.unicundi.ejb.exceptions.EmptyModelException;
 import co.edu.unicundi.ejb.exceptions.IntegrityException;
 import co.edu.unicundi.ejb.exceptions.ModelNotFoundException;
 import co.edu.unicundi.ejb.interfaces.IMedicoService;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -18,6 +17,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -32,10 +32,13 @@ public class MedicosController {
     private IMedicoService medicoService;
     
     @GET
-    @Path("{pageNumber}/{pageSize}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response listar(@PathParam("pageNumber") int pageNumber, @PathParam("pageSize") int pageSize) {
-        PagedListDto consultas = medicoService.buscar(pageNumber, pageSize);
+    public Response listar(
+        @QueryParam("pageNumber") Integer pageNumber,
+        @QueryParam("pageSize") Integer pageSize,
+        @QueryParam("details") boolean details
+    ) {
+        PagedListDto consultas = medicoService.buscar(pageNumber, pageSize, details);
         return Response
                 .status(Response.Status.OK)
                 .entity(consultas)
@@ -45,19 +48,11 @@ public class MedicosController {
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response buscarPorId(@PathParam("id") int id) throws ModelNotFoundException{
-        MedicoDto medico = medicoService.buscarPorId(id, false);
-        return Response
-                .status(Response.Status.OK)
-                .entity(medico)
-                .build();
-    }
-        
-    @GET
-    @Path("{id}/detalles")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response buscarPorIdConDetalles(@PathParam("id") int id) throws ModelNotFoundException{
-        MedicoDto medico = medicoService.buscarPorId(id, true);
+    public Response buscarPorId(
+        @PathParam("id") int id,
+        @QueryParam("details") boolean details
+    ) throws ModelNotFoundException{
+        MedicoDto medico = medicoService.buscarPorId(id, details);
         return Response
                 .status(Response.Status.OK)
                 .entity(medico)

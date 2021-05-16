@@ -2,6 +2,7 @@ co\edu\unicundi\serviciowebconsultas\controllers\MedicosViewController.class
 co\edu\unicundi\serviciowebconsultas\exceptions\filters\ModelNotFoundExceptionFilter.class
 org\netbeans\rest\application\config\ApplicationConfig.class
 co\edu\unicundi\serviciowebconsultas\exceptions\filters\NotFoundExceptionFilter.class
+co\edu\unicundi\serviciowebconsultas\filters\CorsFilter.class
 co\edu\unicundi\serviciowebconsultas\exceptions\filters\IntegrityExceptionFilter.class
 co\edu\unicundi\serviciowebconsultas\exceptions\filters\NotAllowedExceptionFilter.class
 co\edu\unicundi\serviciowebconsultas\controllers\ConsultasController.class

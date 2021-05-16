@@ -9,13 +9,13 @@ import java.util.List;
  * @param <T>
  */
 public class PagedListDto<T> implements Serializable {
-    private int currentPage;
-    private int totalPages;
-    private int pageSize;
-    private int totalCount;
+    private Integer currentPage;
+    private Integer totalPages;
+    private Integer pageSize;
+    private Integer totalCount;
     private List<T> items;
     
-    public PagedListDto(List<T> items, int count, int pageNumber, int pageSize){
+    public PagedListDto(List<T> items, Integer count, Integer pageNumber, Integer pageSize){
         this.items = items;
         this.totalCount = count;
         this.pageSize = pageSize;
@@ -23,35 +23,35 @@ public class PagedListDto<T> implements Serializable {
         this.totalPages = (int)Math.ceil(count / (double) pageSize);
     }
 
-    public int getCurrentPage() {
+    public Integer getCurrentPage() {
         return currentPage;
     }
 
-    public void setCurrentPage(int currentPage) {
+    public void setCurrentPage(Integer currentPage) {
         this.currentPage = currentPage;
     }
 
-    public int getTotalPages() {
+    public Integer getTotalPages() {
         return totalPages;
     }
 
-    public void setTotalPages(int totalPages) {
+    public void setTotalPages(Integer totalPages) {
         this.totalPages = totalPages;
     }
 
-    public int getPageSize() {
+    public Integer getPageSize() {
         return pageSize;
     }
 
-    public void setPageSize(int pageSize) {
+    public void setPageSize(Integer pageSize) {
         this.pageSize = pageSize;
     }
 
-    public int getTotalCount() {
+    public Integer getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(int totalCount) {
+    public void setTotalCount(Integer totalCount) {
         this.totalCount = totalCount;
     }
 

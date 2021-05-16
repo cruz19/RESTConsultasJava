@@ -10,7 +10,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface IRepository<T> {
-    public List<T> findAll(int pageNumber, int pageSize);
+    public List<T> findAll(Integer pageNumber, Integer pageSize);
     public T find(Object id);
     public void create(T entity);
     public void edit(T entity);

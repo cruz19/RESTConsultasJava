@@ -25,10 +25,13 @@ public class ConsultasController {
     private IConsultaService consultaService;
     
     @GET
-    @Path("{pageNumber}/{pageSize}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response listar(@PathParam("pageNumber") int pageNumber, @PathParam("pageSize") int pageSize) {
-        PagedListDto consultas = consultaService.buscar(pageNumber, pageSize);
+    public Response listar(
+            @QueryParam("pageNumber") Integer pageNumber,
+            @QueryParam("pageSize") Integer pageSize,
+            @QueryParam("details") boolean details
+    ) {
+        PagedListDto consultas = consultaService.buscar(pageNumber, pageSize, details);
         return Response
                 .status(Response.Status.OK)
                 .entity(consultas)
@@ -38,8 +41,11 @@ public class ConsultasController {
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response buscarPorId(@PathParam("id") int id) throws ModelNotFoundException{
-        ConsultaDto consulta = consultaService.buscarPorId(id);
+    public Response buscarPorId(
+        @PathParam("id") int id,
+        @QueryParam("details") boolean details
+    ) throws ModelNotFoundException{
+        ConsultaDto consulta = consultaService.buscarPorId(id, details);
         return Response
                 .status(Response.Status.OK)
                 .entity(consulta)

@@ -43,6 +43,7 @@ public class ApplicationConfig extends Application {
         resources.add(co.edu.unicundi.serviciowebconsultas.exceptions.filters.NotSupportedExceptionFilter.class);
         resources.add(co.edu.unicundi.serviciowebconsultas.exceptions.filters.NullPointerExceptionFilter.class);
         resources.add(co.edu.unicundi.serviciowebconsultas.exceptions.filters.WebApplicationExceptionFilter.class);
+        resources.add(co.edu.unicundi.serviciowebconsultas.filters.CorsFilter.class);
     }
     
 }

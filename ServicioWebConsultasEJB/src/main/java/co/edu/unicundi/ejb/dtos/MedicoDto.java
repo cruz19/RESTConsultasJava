@@ -2,7 +2,6 @@ package co.edu.unicundi.ejb.dtos;
 
 import java.io.Serializable;
 import java.util.List;
-import org.codehaus.jackson.annotate.JsonManagedReference;
 
 /**
  * @author Steven Cruz
@@ -15,7 +14,7 @@ public class MedicoDto implements Serializable {
     private String correo;
     private DireccionDto direccion;
     private List<ConsultaDto> consultas;
-    private String fechaNacimientoFormat;
+    private String fechaNacimientoStr;
 
     public Integer getId() {
         return id;
@@ -57,7 +56,6 @@ public class MedicoDto implements Serializable {
         this.direccion = direccion;
     }
 
-    @JsonManagedReference
     public List<ConsultaDto> getConsultas() {
         return consultas;
     }
@@ -66,11 +64,11 @@ public class MedicoDto implements Serializable {
         this.consultas = consultas;
     }
 
-    public String getFechaNacimientoFormat() {
-        return fechaNacimientoFormat;
+    public String getFechaNacimientoStr() {
+        return fechaNacimientoStr;
     }
 
-    public void setFechaNacimientoFormat(String fechaNacimientoFormat) {
-        this.fechaNacimientoFormat = fechaNacimientoFormat;
+    public void setFechaNacimientoStr(String fechaNacimientoStr) {
+        this.fechaNacimientoStr = fechaNacimientoStr;
     }
 }

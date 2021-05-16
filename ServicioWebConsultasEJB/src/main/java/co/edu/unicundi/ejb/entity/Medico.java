@@ -24,7 +24,6 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonManagedReference;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  * @author Steven Cruz
@@ -74,8 +73,7 @@ public class Medico implements Serializable{
     private List<Consulta> consultas;
     
     @Transient
-    @JsonProperty("fechaNacimiento")
-    private String fechaNacimientoFormat;
+    private String fechaNacimientoStr;
 
     public Integer getId() {
         return id;
@@ -135,12 +133,12 @@ public class Medico implements Serializable{
         this.consultas = consultas;
     }
 
-    public String getFechaNacimientoFormat() {
+    public String getFechaNacimientoStr() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return formatter.format(fechaNacimiento);
     }
 
-    public void setFechaNacimientoFormat(String fechaNacimientoFormat) {
-        this.fechaNacimientoFormat = fechaNacimientoFormat;
+    public void setFechaNacimientoStr(String fechaNacimientoStr) {
+        this.fechaNacimientoStr = fechaNacimientoStr;
     }
 }

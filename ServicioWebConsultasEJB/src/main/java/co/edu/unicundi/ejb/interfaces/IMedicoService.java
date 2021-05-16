@@ -14,7 +14,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface IMedicoService {
-    public PagedListDto buscar(int pageNumber, int pageSize);
+    public PagedListDto buscar(Integer pageNumber, Integer pageSize, boolean details);
     public MedicoDto buscarPorId(Integer id, boolean details) throws ModelNotFoundException;
     public void guardar(Medico medico) throws EmptyModelException, IntegrityException;
     public void actualizar(Medico medico) throws EmptyModelException, ModelNotFoundException, IntegrityException;

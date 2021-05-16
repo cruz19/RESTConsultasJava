@@ -14,8 +14,8 @@ import javax.ejb.Local;
  */
 @Local
 public interface IConsultaService {
-    public PagedListDto buscar(int pageNumber, int pageSize);
-    public ConsultaDto buscarPorId(Integer id) throws ModelNotFoundException;
+    public PagedListDto buscar(Integer pageNumber, Integer pageSize, boolean details);
+    public ConsultaDto buscarPorId(Integer id, boolean details) throws ModelNotFoundException;
     public void guardar(Consulta consulta) throws EmptyModelException, ModelNotFoundException, IntegrityException;
     public void actualizar(Consulta consulta) throws EmptyModelException, ModelNotFoundException, IntegrityException;
     public void eliminar(Integer id) throws ModelNotFoundException;

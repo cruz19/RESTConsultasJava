@@ -23,7 +23,6 @@ import javax.validation.constraints.NotNull;
 import org.codehaus.jackson.annotate.JsonBackReference;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonManagedReference;
-import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  * @author Stiven cruz
@@ -56,8 +55,7 @@ public class Consulta implements Serializable {
     private Medico medico;
     
     @Transient
-    @JsonProperty("fecha")
-    private String fechaFormat;
+    private String fechaStr;
 
     public Integer getId() {
         return id;
@@ -94,12 +92,12 @@ public class Consulta implements Serializable {
         this.medico = medico;
     }
 
-    public String getFechaFormat() {
+    public String getFechaStr() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return formatter.format(fecha);
     }
 
-    public void setFechaFormat(String fechaFormat) {
-        this.fechaFormat = fechaFormat;
+    public void setFechaStr(String fechaStr) {
+        this.fechaStr = fechaStr;
     }
 }

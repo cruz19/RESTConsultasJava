@@ -22,12 +22,12 @@ public abstract class Repository<T> implements IRepository<T> {
     protected abstract EntityManager getEntityManager();
 
     @Override
-    public List<T> findAll(int pageNumber, int pageSize) {
+    public List<T> findAll(Integer pageNumber, Integer pageSize) {
         getEntityManager().getEntityManagerFactory().getCache().evictAll();
         
         // Default values
-        pageNumber = pageNumber == 0 ? 1 : pageNumber;
-        pageSize = pageSize == 0 ? 10 : pageSize;
+        pageNumber = pageNumber == null || pageNumber <= 0 ? 1 : pageNumber;
+        pageSize = pageSize == null  || pageSize <= 0 ? 10 : pageSize;
 
         String namedQuery = entityClass.getSimpleName() + ".findAll";
         TypedQuery<T> query = getEntityManager().createNamedQuery(namedQuery, entityClass)

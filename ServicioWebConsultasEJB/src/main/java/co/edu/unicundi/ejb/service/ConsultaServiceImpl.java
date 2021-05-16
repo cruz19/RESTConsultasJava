@@ -33,25 +33,40 @@ public class ConsultaServiceImpl implements IConsultaService {
     ModelMapper modelMapper = new ModelMapper();
 
     @Override
-    public PagedListDto buscar(int pageNumber, int pageSize) {
+    public PagedListDto buscar(Integer pageNumber, Integer pageSize, boolean details) {
         // Listar
         List<Consulta> consultaList = consultaRepository.findAll(pageNumber, pageSize);
         // Mapper
         Type listType = new TypeToken<List<ConsultaDto>>(){}.getType();
         List<ConsultaDto> consultaDtoList = modelMapper.map(consultaList, listType);
-        for(ConsultaDto c : consultaDtoList){ c.getMedico().setConsultas(null); }
+        
+        // Detalles
+        if (details){
+            for(ConsultaDto c : consultaDtoList){ c.getMedico().setConsultas(null); }
+        } else {
+            for(ConsultaDto c : consultaDtoList){ c.setMedico(null); c.setDetallesConsulta(null); }
+        }
+        
         // PagedList
         return new PagedListDto(consultaDtoList, consultaRepository.count(), pageNumber, pageSize);
     }
 
     @Override
-    public ConsultaDto buscarPorId(Integer id) throws ModelNotFoundException {
+    public ConsultaDto buscarPorId(Integer id, boolean details) throws ModelNotFoundException {
         Consulta consulta = consultaRepository.find(id);
         if (consulta == null){
             throw new ModelNotFoundException("No existe una consulta con el id enviado");
         }
         ConsultaDto consultaDTO = modelMapper.map(consulta, ConsultaDto.class);
-        consultaDTO.getMedico().setConsultas(null);
+        
+        // Detalles
+        if (details){
+            consultaDTO.getMedico().setConsultas(null);
+        } else {
+            consultaDTO.setMedico(null);
+            consultaDTO.setDetallesConsulta(null);
+        }
+        
         return consultaDTO;
     }
 
