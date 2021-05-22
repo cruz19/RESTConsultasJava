@@ -39,8 +39,7 @@ public class MedicoServiceImpl implements IMedicoService {
         // Detalles
         if (details){
             for(MedicoDto medico : medicoDtoList)
-                for(ConsultaDto consulta : medico.getConsultas())
-                    consulta.setMedico(null);
+                for(ConsultaDto consulta : medico.getConsultas()){ consulta.setMedico(null); consulta.setDetallesConsulta(null); }
         } else {
             for(MedicoDto medico : medicoDtoList) { medico.setConsultas(null); medico.setDireccion(null); }
         }
@@ -57,8 +56,7 @@ public class MedicoServiceImpl implements IMedicoService {
         }
         MedicoDto medicoDTO = modelMapper.map(medico, MedicoDto.class);
         if (details){
-            for(ConsultaDto c : medicoDTO.getConsultas())
-                c.setMedico(null);
+            for(ConsultaDto c : medicoDTO.getConsultas()){ c.setMedico(null); c.setDetallesConsulta(null); }
         } else {
             medicoDTO.setConsultas(null);
             medicoDTO.setDireccion(null);

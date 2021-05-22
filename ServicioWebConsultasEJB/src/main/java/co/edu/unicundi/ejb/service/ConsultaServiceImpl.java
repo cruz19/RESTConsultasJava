@@ -1,6 +1,7 @@
 package co.edu.unicundi.ejb.service;
 
 import co.edu.unicundi.ejb.dtos.ConsultaDto;
+import co.edu.unicundi.ejb.dtos.DetalleConsultaDto;
 import co.edu.unicundi.ejb.dtos.PagedListDto;
 import co.edu.unicundi.ejb.entity.Consulta;
 import co.edu.unicundi.ejb.entity.DetalleConsulta;
@@ -42,7 +43,11 @@ public class ConsultaServiceImpl implements IConsultaService {
         
         // Detalles
         if (details){
-            for(ConsultaDto c : consultaDtoList){ c.getMedico().setConsultas(null); }
+            for(ConsultaDto c : consultaDtoList){
+                c.getMedico().setConsultas(null);
+                for(DetalleConsultaDto dc : c.getDetallesConsulta())
+                    dc.setConsulta(null);
+            }
         } else {
             for(ConsultaDto c : consultaDtoList){ c.setMedico(null); c.setDetallesConsulta(null); }
         }
@@ -62,6 +67,7 @@ public class ConsultaServiceImpl implements IConsultaService {
         // Detalles
         if (details){
             consultaDTO.getMedico().setConsultas(null);
+            for(DetalleConsultaDto dc : consultaDTO.getDetallesConsulta()) dc.setConsulta(null);
         } else {
             consultaDTO.setMedico(null);
             consultaDTO.setDetallesConsulta(null);
@@ -87,6 +93,8 @@ public class ConsultaServiceImpl implements IConsultaService {
             }
             consulta.setMedico(medico);
             medico.getConsultas().add(consulta);
+        } else {
+            throw new IntegrityException("El id del médico es requerido");
         }
         consultaRepository.create(consulta);
     }

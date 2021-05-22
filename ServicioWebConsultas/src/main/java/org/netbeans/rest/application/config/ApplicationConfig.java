@@ -30,6 +30,8 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(co.edu.unicundi.serviciowebconsultas.controllers.ConsultasController.class);
+        resources.add(co.edu.unicundi.serviciowebconsultas.controllers.DetallesConsultasController.class);
+        resources.add(co.edu.unicundi.serviciowebconsultas.controllers.ExamenesController.class);
         resources.add(co.edu.unicundi.serviciowebconsultas.controllers.MedicosController.class);
         resources.add(co.edu.unicundi.serviciowebconsultas.controllers.MedicosViewController.class);
         resources.add(co.edu.unicundi.serviciowebconsultas.exceptions.filters.BadRequestExceptionFilter.class);

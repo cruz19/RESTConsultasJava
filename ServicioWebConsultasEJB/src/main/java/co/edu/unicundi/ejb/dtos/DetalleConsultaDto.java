@@ -8,6 +8,7 @@ public class DetalleConsultaDto {
     private Integer id;
     private String diagnostico;
     private String tratamiento;
+    private ConsultaDto consulta;
 
     public Integer getId() {
         return id;
@@ -31,5 +32,13 @@ public class DetalleConsultaDto {
 
     public void setTratamiento(String tratamiento) {
         this.tratamiento = tratamiento;
+    }
+
+    public ConsultaDto getConsulta() {
+        return consulta;
+    }
+
+    public void setConsulta(ConsultaDto consulta) {
+        this.consulta = consulta;
     }
 }

@@ -23,6 +23,7 @@ import org.codehaus.jackson.annotate.JsonBackReference;
 @Entity
 @Table(name = "detalle_consulta")
 @NamedQueries({
+    @NamedQuery(name = "DetalleConsulta.findAll", query = "SELECT d FROM DetalleConsulta d ORDER BY d.id"),
     @NamedQuery(name = "DetalleConsulta.count", query = "SELECT COUNT(d) FROM DetalleConsulta d")
 })
 public class DetalleConsulta implements Serializable {
@@ -43,7 +44,8 @@ public class DetalleConsulta implements Serializable {
     @Column(name = "tratamiento", nullable = false)
     private String tratamiento;
     
-    @ManyToOne(cascade = CascadeType.ALL)
+    @NotNull(message = "La consulta es requerida")
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_consulta", nullable = false)
     private Consulta consulta;
 
