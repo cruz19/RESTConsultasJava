@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -48,6 +49,9 @@ public class Consulta implements Serializable {
     
     @OneToMany(mappedBy = "consulta", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<DetalleConsulta> detallesConsulta;
+    
+    @OneToMany(mappedBy = "consulta", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<ConsultaExamen> examenesConsulta;
     
     @NotNull(message = "El médico es requerido")
     @ManyToOne
@@ -99,5 +103,38 @@ public class Consulta implements Serializable {
 
     public void setFechaStr(String fechaStr) {
         this.fechaStr = fechaStr;
+    }
+
+    @JsonManagedReference
+    public List<ConsultaExamen> getExamenesConsulta() {
+        return examenesConsulta;
+    }
+
+    public void setExamenesConsulta(List<ConsultaExamen> examenesConsulta) {
+        this.examenesConsulta = examenesConsulta;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Consulta other = (Consulta) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
     }
 }

@@ -1,6 +1,7 @@
 package co.edu.unicundi.ejb.entity;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
@@ -33,5 +34,34 @@ public class ConsultaExamenPK implements Serializable {
     public void setIdExamen(Integer idExamen) {
         this.idExamen = idExamen;
     }
-    
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 43 * hash + Objects.hashCode(this.idConsulta);
+        hash = 43 * hash + Objects.hashCode(this.idExamen);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ConsultaExamenPK other = (ConsultaExamenPK) obj;
+        if (!Objects.equals(this.idConsulta, other.idConsulta)) {
+            return false;
+        }
+        if (!Objects.equals(this.idExamen, other.idExamen)) {
+            return false;
+        }
+        return true;
+    }
+
 }

@@ -4,6 +4,7 @@ import co.edu.unicundi.ejb.dtos.ConsultaDto;
 import co.edu.unicundi.ejb.dtos.DetalleConsultaDto;
 import co.edu.unicundi.ejb.dtos.PagedListDto;
 import co.edu.unicundi.ejb.entity.Consulta;
+import co.edu.unicundi.ejb.entity.ConsultaExamen;
 import co.edu.unicundi.ejb.entity.DetalleConsulta;
 import co.edu.unicundi.ejb.entity.Medico;
 import co.edu.unicundi.ejb.exceptions.EmptyModelException;
@@ -81,11 +82,19 @@ public class ConsultaServiceImpl implements IConsultaService {
         if (consulta == null){
             throw new EmptyModelException("El objeto consulta está vacío");
         }
+        // Detalles consulta
         if(consulta.getDetallesConsulta() != null) {
             for (DetalleConsulta dc : consulta.getDetallesConsulta()) {
                 dc.setConsulta(consulta);
             }
         }
+        // Exámenes consulta
+        if(consulta.getExamenesConsulta() != null) {
+            for (ConsultaExamen ce : consulta.getExamenesConsulta()) {
+                ce.setConsulta(consulta);
+            }
+        }
+        // Médico
         if (consulta.getMedico().getId() != null){
             Medico medico = medicoRepository.find(consulta.getMedico().getId());
             if (medico == null){
@@ -119,6 +128,13 @@ public class ConsultaServiceImpl implements IConsultaService {
                 dc.setConsulta(consultaEntity);
             }
             consultaEntity.setDetallesConsulta(consulta.getDetallesConsulta());
+        }
+        // Exámenes consulta
+        if(consulta.getExamenesConsulta()!= null) {
+            for (ConsultaExamen ce : consulta.getExamenesConsulta()) {
+                ce.setConsulta(consultaEntity);
+            }
+            consultaEntity.setExamenesConsulta(consulta.getExamenesConsulta());
         }
         // Médico
         if (consulta.getMedico().getId() != null){
