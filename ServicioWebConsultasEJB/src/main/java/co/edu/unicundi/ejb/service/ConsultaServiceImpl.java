@@ -12,6 +12,7 @@ import co.edu.unicundi.ejb.exceptions.IntegrityException;
 import co.edu.unicundi.ejb.exceptions.ModelNotFoundException;
 import co.edu.unicundi.ejb.interfaces.IConsultaService;
 import co.edu.unicundi.ejb.repository.IConsultaRepository;
+import co.edu.unicundi.ejb.repository.IExamenRepository;
 import co.edu.unicundi.ejb.repository.IMedicoRepository;
 import java.lang.reflect.Type;
 import java.util.List;
@@ -31,19 +32,21 @@ public class ConsultaServiceImpl implements IConsultaService {
     private IConsultaRepository consultaRepository;
     @EJB
     private IMedicoRepository medicoRepository;
+    @EJB
+    private IExamenRepository examenRepository;
     
     ModelMapper modelMapper = new ModelMapper();
 
     @Override
-    public PagedListDto buscar(Integer pageNumber, Integer pageSize, boolean details) {
+    public PagedListDto buscar(Integer pagina, Integer tamano, boolean detalles) {
         // Listar
-        List<Consulta> consultaList = consultaRepository.findAll(pageNumber, pageSize);
+        List<Consulta> consultaList = consultaRepository.findAll(pagina, tamano);
         // Mapper
         Type listType = new TypeToken<List<ConsultaDto>>(){}.getType();
         List<ConsultaDto> consultaDtoList = modelMapper.map(consultaList, listType);
         
         // Detalles
-        if (details){
+        if (detalles){
             for(ConsultaDto c : consultaDtoList){
                 c.getMedico().setConsultas(null);
                 for(DetalleConsultaDto dc : c.getDetallesConsulta())
@@ -54,11 +57,11 @@ public class ConsultaServiceImpl implements IConsultaService {
         }
         
         // PagedList
-        return new PagedListDto(consultaDtoList, consultaRepository.count(), pageNumber, pageSize);
+        return new PagedListDto(consultaDtoList, consultaRepository.count(), pagina, tamano);
     }
 
     @Override
-    public ConsultaDto buscarPorId(Integer id, boolean details) throws ModelNotFoundException {
+    public ConsultaDto buscarPorId(Integer id, boolean detalles) throws ModelNotFoundException {
         Consulta consulta = consultaRepository.find(id);
         if (consulta == null){
             throw new ModelNotFoundException("No existe una consulta con el id enviado");
@@ -66,7 +69,7 @@ public class ConsultaServiceImpl implements IConsultaService {
         ConsultaDto consultaDTO = modelMapper.map(consulta, ConsultaDto.class);
         
         // Detalles
-        if (details){
+        if (detalles){
             consultaDTO.getMedico().setConsultas(null);
             for(DetalleConsultaDto dc : consultaDTO.getDetallesConsulta()) dc.setConsulta(null);
         } else {
@@ -91,6 +94,13 @@ public class ConsultaServiceImpl implements IConsultaService {
         // Exámenes consulta
         if(consulta.getExamenesConsulta() != null) {
             for (ConsultaExamen ce : consulta.getExamenesConsulta()) {
+                if (ce.getExamen().getId() != null){
+                    if (examenRepository.find(ce.getExamen().getId()) == null){
+                        throw new ModelNotFoundException("No existe un examen con el id => " + ce.getExamen().getId());
+                    }
+                } else {
+                    throw new IntegrityException("El id del examen es requerido");
+                }
                 ce.setConsulta(consulta);
             }
         }
@@ -132,6 +142,13 @@ public class ConsultaServiceImpl implements IConsultaService {
         // Exámenes consulta
         if(consulta.getExamenesConsulta()!= null) {
             for (ConsultaExamen ce : consulta.getExamenesConsulta()) {
+                if (ce.getExamen().getId() != null){
+                    if (examenRepository.find(ce.getExamen().getId()) == null){
+                        throw new ModelNotFoundException("No existe un examen con el id => " + ce.getExamen().getId());
+                    }
+                } else {
+                    throw new IntegrityException("El id del examen es requerido");
+                }
                 ce.setConsulta(consultaEntity);
             }
             consultaEntity.setExamenesConsulta(consulta.getExamenesConsulta());
@@ -153,7 +170,7 @@ public class ConsultaServiceImpl implements IConsultaService {
         if (consulta == null){
             throw new ModelNotFoundException("No existe una consulta con el id enviado");
         }
-        consultaRepository.remove(consulta);
+        consultaRepository.remove(id);
     }
     
 }

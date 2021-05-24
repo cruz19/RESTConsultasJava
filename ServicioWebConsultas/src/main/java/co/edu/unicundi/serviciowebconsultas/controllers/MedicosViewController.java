@@ -23,8 +23,8 @@ public class MedicosViewController {
     @GET
     @Path("{pageNumber}/{pageSize}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response listar(@PathParam("pageNumber") int pageNumber, @PathParam("pageSize") int pageSize) {
-        PagedListDto consultas = medicoViewService.buscar(pageNumber, pageSize);
+    public Response listar(@PathParam("pagina") int pagina, @PathParam("tamano") int tamano) {
+        PagedListDto consultas = medicoViewService.buscar(pagina, tamano);
         return Response
                 .status(Response.Status.OK)
                 .entity(consultas)

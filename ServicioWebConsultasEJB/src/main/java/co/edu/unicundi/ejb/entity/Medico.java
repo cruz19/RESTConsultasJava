@@ -32,9 +32,10 @@ import org.codehaus.jackson.annotate.JsonManagedReference;
 @Entity
 @Table(name = "medico")
 @NamedQueries({
-    @NamedQuery(name = "Medico.findAll", query = "SELECT m FROM Medico m ORDER BY m.id"),
-    @NamedQuery(name = "Medico.count", query = "SELECT COUNT(m) FROM Medico m"),
-    @NamedQuery(name = "Medico.findByEmail", query = "SELECT COUNT(m) FROM Medico m WHERE (:id = -1 OR m.id != :id) AND m.correo = :email")
+    @NamedQuery(name = "Medico.listar", query = "SELECT m FROM Medico m ORDER BY m.id"),
+    @NamedQuery(name = "Medico.contar", query = "SELECT COUNT(m) FROM Medico m"),
+    @NamedQuery(name = "Medico.buscarPorEmail", query = "SELECT COUNT(m) FROM Medico m WHERE (:id = -1 OR m.id != :id) AND m.correo = :email"),
+    @NamedQuery(name = "Medico.eliminar", query = "DELETE FROM Medico m WHERE m.id = :id")
 })
 public class Medico implements Serializable{
     private static final long serialVersionUID = 1L;

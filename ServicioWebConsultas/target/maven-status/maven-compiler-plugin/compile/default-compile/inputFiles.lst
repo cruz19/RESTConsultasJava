@@ -15,4 +15,5 @@ C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos 
 C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultas\src\main\java\co\edu\unicundi\serviciowebconsultas\exceptions\filters\WebApplicationExceptionFilter.java
 C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultas\src\main\java\co\edu\unicundi\serviciowebconsultas\controllers\ExamenesController.java
 C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultas\src\main\java\co\edu\unicundi\serviciowebconsultas\controllers\DetallesConsultasController.java
+C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultas\src\main\java\co\edu\unicundi\serviciowebconsultas\controllers\ConsultasExamenesController.java
 C:\Universidad\2021-1\Línea de Profundización II\Segundo Corte\JPA Uno a muchos Consultas\ServicioWebConsultas\src\main\java\co\edu\unicundi\serviciowebconsultas\exceptions\filters\ConstraintViolationExceptionFilter.java

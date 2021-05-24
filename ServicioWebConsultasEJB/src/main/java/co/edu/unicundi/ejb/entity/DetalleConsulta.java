@@ -23,8 +23,9 @@ import org.codehaus.jackson.annotate.JsonBackReference;
 @Entity
 @Table(name = "detalle_consulta")
 @NamedQueries({
-    @NamedQuery(name = "DetalleConsulta.findAll", query = "SELECT d FROM DetalleConsulta d ORDER BY d.id"),
-    @NamedQuery(name = "DetalleConsulta.count", query = "SELECT COUNT(d) FROM DetalleConsulta d")
+    @NamedQuery(name = "DetalleConsulta.listar", query = "SELECT d FROM DetalleConsulta d ORDER BY d.id"),
+    @NamedQuery(name = "DetalleConsulta.contar", query = "SELECT COUNT(d) FROM DetalleConsulta d"),
+    @NamedQuery(name = "DetalleConsulta.eliminar", query = "DELETE FROM DetalleConsulta d WHERE d.id = :id")
 })
 public class DetalleConsulta implements Serializable {
     private static final long serialVersionUID = 1L;

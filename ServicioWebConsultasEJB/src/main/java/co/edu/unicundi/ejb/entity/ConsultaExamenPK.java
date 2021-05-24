@@ -13,10 +13,10 @@ import javax.persistence.Embeddable;
 public class ConsultaExamenPK implements Serializable {
     private static final long serialVersionUID = 1L;
     
-    @Column(name = "id_consulta")
+    @Column(name = "consulta_id")
     private Integer idConsulta;
     
-    @Column(name = "id_examen")
+    @Column(name = "examen_id")
     private Integer idExamen;
 
     public Integer getIdConsulta() {

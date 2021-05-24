@@ -1,7 +1,6 @@
 package co.edu.unicundi.ejb.entity;
 
 import java.io.Serializable;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -20,10 +19,9 @@ import org.codehaus.jackson.annotate.JsonBackReference;
 @Entity
 @Table(name = "consulta_examen")
 @NamedQueries({
-    @NamedQuery(name = "ConsultaExamen.findAll", query = "SELECT e FROM ConsultaExamen e"),
-    @NamedQuery(name = "ConsultaExamen.count", query = "SELECT COUNT(e) FROM ConsultaExamen e"),
-    @NamedQuery(name = "ConsultaExamen.findByConsulta", query = "SELECT e FROM ConsultaExamen e WHERE e.consulta.id = :idConsulta"),
-    @NamedQuery(name = "ConsultaExamen.findByExamen", query = "SELECT e FROM ConsultaExamen e WHERE e.examen.id = :idExamen"),
+    @NamedQuery(name = "ConsultaExamen.buscarPorConsulta", query = "SELECT e FROM ConsultaExamen e WHERE e.consulta.id = :idConsulta"),
+    @NamedQuery(name = "ConsultaExamen.buscar", query = "SELECT COUNT(e) FROM ConsultaExamen e WHERE e.consulta.id = :idConsulta AND e.examen.id = :idExamen"),
+    @NamedQuery(name = "ConsultaExamen.eliminar", query = "DELETE FROM ConsultaExamen e WHERE e.consulta.id = :idConsulta AND e.examen.id = :idExamen")
 })
 public class ConsultaExamen implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -31,12 +29,11 @@ public class ConsultaExamen implements Serializable {
     @EmbeddedId
     private ConsultaExamenPK id;
     
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @MapsId("idConsulta")
-    @NotNull(message = "La consulta es requerida")
     private Consulta consulta;
     
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @MapsId("idExamen")
     @NotNull(message = "El examen es requerido")
     private Examen examen;

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 /**
@@ -28,16 +29,28 @@ public class ConsultaExamenRepository extends Repository<ConsultaExamen> impleme
     }
 
     @Override
-    public List<ConsultaExamen> findByConsulta(Integer id) {
-        TypedQuery<ConsultaExamen> query = em.createNamedQuery("ConsultaExamen.findByConsulta", ConsultaExamen.class);
-        query.setParameter("idConsulta", id);
+    public List<ConsultaExamen> findByConsulta(Integer idConsulta) {
+        TypedQuery<ConsultaExamen> query = em.createNamedQuery("ConsultaExamen.buscarPorConsulta", ConsultaExamen.class);
+        query.setParameter("idConsulta", idConsulta);
         return query.getResultList();
     }
 
     @Override
-    public List<ConsultaExamen> findByExamen(Integer id) {
-        TypedQuery<ConsultaExamen> query = em.createNamedQuery("ConsultaExamen.findByExamen", ConsultaExamen.class);
-        query.setParameter("idExamen", id);
-        return query.getResultList();
+    public boolean findByPK(Integer idConsulta, Integer idExamen) {
+        Query query = em.createNamedQuery("ConsultaExamen.buscar");
+        query.setParameter("idConsulta", idConsulta);
+        query.setParameter("idExamen", idExamen);
+        int count = ((Number)query.getSingleResult()).intValue();
+        return count > 0;
     }
+
+    @Override
+    public void removeByPK(Integer idConsulta, Integer idExamen) {
+        Query query = em.createNamedQuery("ConsultaExamen.eliminar");
+        query.setParameter("idConsulta", idConsulta);
+        query.setParameter("idExamen", idExamen);
+        query.executeUpdate();
+    }
+    
+    
 }

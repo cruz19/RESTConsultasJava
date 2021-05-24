@@ -14,6 +14,6 @@ public interface IRepository<T> {
     public T find(Object id);
     public void create(T entity);
     public void edit(T entity);
-    public void remove(T entity);
+    public void remove(Object id);
     public int count();
 }

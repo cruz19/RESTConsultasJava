@@ -29,15 +29,15 @@ public class MedicoServiceImpl implements IMedicoService {
     ModelMapper modelMapper = new ModelMapper();
 
     @Override
-    public PagedListDto buscar(Integer pageNumber, Integer pageSize, boolean details) {
+    public PagedListDto buscar(Integer pagina, Integer tamano, boolean detalles) {
         // Listar
-        List<Medico> medicoList = repository.findAll(pageNumber, pageSize);
+        List<Medico> medicoList = repository.findAll(pagina, tamano);
         // Mapper
         Type listType = new TypeToken<List<MedicoDto>>(){}.getType();
         List<MedicoDto> medicoDtoList = modelMapper.map(medicoList, listType);
         
         // Detalles
-        if (details){
+        if (detalles){
             for(MedicoDto medico : medicoDtoList)
                 for(ConsultaDto consulta : medico.getConsultas()){ consulta.setMedico(null); consulta.setDetallesConsulta(null); }
         } else {
@@ -45,17 +45,17 @@ public class MedicoServiceImpl implements IMedicoService {
         }
         
         // PagedList
-        return new PagedListDto(medicoDtoList, repository.count(), pageNumber, pageSize);
+        return new PagedListDto(medicoDtoList, repository.count(), pagina, tamano);
     }
 
     @Override
-    public MedicoDto buscarPorId(Integer id, boolean details) throws ModelNotFoundException {
+    public MedicoDto buscarPorId(Integer id, boolean detalles) throws ModelNotFoundException {
         Medico medico = repository.find(id);
         if (medico == null){
             throw new ModelNotFoundException("No existe un médico con el id enviado");
         }
         MedicoDto medicoDTO = modelMapper.map(medico, MedicoDto.class);
-        if (details){
+        if (detalles){
             for(ConsultaDto c : medicoDTO.getConsultas()){ c.setMedico(null); c.setDetallesConsulta(null); }
         } else {
             medicoDTO.setConsultas(null);
@@ -113,7 +113,7 @@ public class MedicoServiceImpl implements IMedicoService {
         if (medico == null){
             throw new ModelNotFoundException("No existe un médico con el id enviado");
         }
-        repository.remove(medico);
+        repository.remove(id);
     }
     
 }

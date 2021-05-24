@@ -33,11 +33,11 @@ public class ConsultasController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response listar(
-            @QueryParam("pageNumber") Integer pageNumber,
-            @QueryParam("pageSize") Integer pageSize,
-            @QueryParam("details") boolean details
+            @QueryParam("pagina") Integer pagina,
+            @QueryParam("tamano") Integer tamano,
+            @QueryParam("detalles") boolean detalles
     ) {
-        PagedListDto consultas = consultaService.buscar(pageNumber, pageSize, details);
+        PagedListDto consultas = consultaService.buscar(pagina, tamano, detalles);
         return Response
                 .status(Response.Status.OK)
                 .entity(consultas)
@@ -49,9 +49,9 @@ public class ConsultasController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response buscarPorId(
         @PathParam("id") int id,
-        @QueryParam("details") boolean details
+        @QueryParam("detalles") boolean detalles
     ) throws ModelNotFoundException{
-        ConsultaDto consulta = consultaService.buscarPorId(id, details);
+        ConsultaDto consulta = consultaService.buscarPorId(id, detalles);
         return Response
                 .status(Response.Status.OK)
                 .entity(consulta)
@@ -89,6 +89,7 @@ public class ConsultasController {
     
     @GET
     @Path("{id}/examenes")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response buscarExamenes(@PathParam("id") int id) throws ModelNotFoundException {
         ExamenesConsultaDto examenesConsulta = consultaExamenService.buscarPorConsulta(id);
         return Response
@@ -97,12 +98,4 @@ public class ConsultasController {
                 .build();
     }
     
-    @POST
-    @Path("ce/guardar")
-    public Response agregarExamenes(@Valid ConsultaExamen consultaExamen) throws EmptyModelException, ModelNotFoundException, IntegrityException {
-        consultaExamenService.guardar(consultaExamen);
-        return Response
-                .status(Response.Status.CREATED)
-                .build();
-    }
 }

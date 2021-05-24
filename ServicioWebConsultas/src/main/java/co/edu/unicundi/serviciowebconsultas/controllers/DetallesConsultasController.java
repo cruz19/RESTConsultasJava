@@ -33,11 +33,11 @@ public class DetallesConsultasController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response listar(
-            @QueryParam("pageNumber") Integer pageNumber,
-            @QueryParam("pageSize") Integer pageSize,
-            @QueryParam("details") boolean details
+        @QueryParam("pagina") Integer pagina,
+        @QueryParam("tamano") Integer tamano,
+        @QueryParam("detalles") boolean detalles
     ) {
-        PagedListDto detallesConsultas = dcService.buscar(pageNumber, pageSize, details);
+        PagedListDto detallesConsultas = dcService.buscar(pagina, tamano, detalles);
         return Response
                 .status(Response.Status.OK)
                 .entity(detallesConsultas)
@@ -49,9 +49,9 @@ public class DetallesConsultasController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response buscarPorId(
         @PathParam("id") int id,
-        @QueryParam("details") boolean details
+        @QueryParam("detalles") boolean detalles
     ) throws ModelNotFoundException{
-        DetalleConsultaDto detalleConsulta = dcService.buscarPorId(id, details);
+        DetalleConsultaDto detalleConsulta = dcService.buscarPorId(id, detalles);
         return Response
                 .status(Response.Status.OK)
                 .entity(detalleConsulta)

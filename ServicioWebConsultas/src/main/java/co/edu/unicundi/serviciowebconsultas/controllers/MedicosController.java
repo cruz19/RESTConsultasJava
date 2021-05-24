@@ -34,11 +34,11 @@ public class MedicosController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response listar(
-        @QueryParam("pageNumber") Integer pageNumber,
-        @QueryParam("pageSize") Integer pageSize,
-        @QueryParam("details") boolean details
+        @QueryParam("pagina") Integer pagina,
+        @QueryParam("tamano") Integer tamano,
+        @QueryParam("detalles") boolean detalles
     ) {
-        PagedListDto consultas = medicoService.buscar(pageNumber, pageSize, details);
+        PagedListDto consultas = medicoService.buscar(pagina, tamano, detalles);
         return Response
                 .status(Response.Status.OK)
                 .entity(consultas)
@@ -50,9 +50,9 @@ public class MedicosController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response buscarPorId(
         @PathParam("id") int id,
-        @QueryParam("details") boolean details
+        @QueryParam("detalles") boolean detalles
     ) throws ModelNotFoundException{
-        MedicoDto medico = medicoService.buscarPorId(id, details);
+        MedicoDto medico = medicoService.buscarPorId(id, detalles);
         return Response
                 .status(Response.Status.OK)
                 .entity(medico)

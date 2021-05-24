@@ -10,6 +10,7 @@ co\edu\unicundi\serviciowebconsultas\controllers\ConsultasController.class
 co\edu\unicundi\serviciowebconsultas\controllers\MedicosController.class
 co\edu\unicundi\serviciowebconsultas\exceptions\filters\ExceptionFilter.class
 co\edu\unicundi\serviciowebconsultas\exceptions\filters\NullPointerExceptionFilter.class
+co\edu\unicundi\serviciowebconsultas\controllers\ConsultasExamenesController.class
 co\edu\unicundi\serviciowebconsultas\controllers\ExamenesController.class
 co\edu\unicundi\serviciowebconsultas\exceptions\filters\WebApplicationExceptionFilter.class
 co\edu\unicundi\serviciowebconsultas\exceptions\filters\BadRequestExceptionFilter.class

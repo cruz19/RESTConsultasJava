@@ -2,14 +2,11 @@ package co.edu.unicundi.ejb.entity;
 
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -23,8 +20,9 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "examen")
 @NamedQueries({
-    @NamedQuery(name = "Examen.findAll", query = "SELECT e FROM Examen e ORDER BY e.id"),
-    @NamedQuery(name = "Examen.count", query = "SELECT COUNT(e) FROM Examen e")
+    @NamedQuery(name = "Examen.listar", query = "SELECT e FROM Examen e ORDER BY e.id"),
+    @NamedQuery(name = "Examen.contar", query = "SELECT COUNT(e) FROM Examen e"),
+    @NamedQuery(name = "Examen.eliminar", query = "DELETE FROM Examen e WHERE e.id = :id")
 })
 public class Examen implements Serializable {
     private static final long serialVersionUID = 1L;

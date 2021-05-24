@@ -32,8 +32,9 @@ import org.codehaus.jackson.annotate.JsonManagedReference;
 @Entity
 @Table(name = "consulta")
 @NamedQueries({
-    @NamedQuery(name = "Consulta.findAll", query = "SELECT c FROM Consulta c ORDER BY c.id"),
-    @NamedQuery(name = "Consulta.count", query = "SELECT COUNT(c) FROM Consulta c")
+    @NamedQuery(name = "Consulta.listar", query = "SELECT c FROM Consulta c ORDER BY c.id"),
+    @NamedQuery(name = "Consulta.contar", query = "SELECT COUNT(c) FROM Consulta c"),
+    @NamedQuery(name = "Consulta.eliminar", query = "DELETE FROM Consulta c WHERE c.id = :id")
 })
 public class Consulta implements Serializable {
     private static final long serialVersionUID = 1L;

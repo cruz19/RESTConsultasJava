@@ -15,8 +15,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "vw_cantidad_consultas_medico")
 @NamedQueries({
-    @NamedQuery(name = "MedicoView.findAll", query = "SELECT m FROM MedicoView m"),
-    @NamedQuery(name = "MedicoView.count", query = "SELECT COUNT(m) FROM MedicoView m")
+    @NamedQuery(name = "MedicoView.listar", query = "SELECT m FROM MedicoView m"),
+    @NamedQuery(name = "MedicoView.contar", query = "SELECT COUNT(m) FROM MedicoView m")
 })
 public class MedicoView implements Serializable {
     @Id

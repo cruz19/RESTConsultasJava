@@ -29,7 +29,7 @@ public abstract class Repository<T> implements IRepository<T> {
         pageNumber = pageNumber == null || pageNumber <= 0 ? 1 : pageNumber;
         pageSize = pageSize == null  || pageSize <= 0 ? 10 : pageSize;
 
-        String namedQuery = entityClass.getSimpleName() + ".findAll";
+        String namedQuery = entityClass.getSimpleName() + ".listar";
         TypedQuery<T> query = getEntityManager().createNamedQuery(namedQuery, entityClass)
                                                 .setFirstResult((pageNumber - 1) * pageSize) // Skip
                                                 .setMaxResults(pageSize); // Take
@@ -52,13 +52,16 @@ public abstract class Repository<T> implements IRepository<T> {
     }
 
     @Override
-    public void remove(T entity) {
-        getEntityManager().remove(getEntityManager().merge(entity));
+    public void remove(Object id) {
+        String namedQuery = entityClass.getSimpleName() + ".eliminar";
+        Query query = getEntityManager().createNamedQuery(namedQuery);
+        query.setParameter("id", id);
+        query.executeUpdate();
     }
     
     @Override
     public int count(){
-        String namedQuery = entityClass.getSimpleName() + ".count";
+        String namedQuery = entityClass.getSimpleName() + ".contar";
         Query query = getEntityManager().createNamedQuery(namedQuery);
         return ((Number)query.getSingleResult()).intValue();
     }

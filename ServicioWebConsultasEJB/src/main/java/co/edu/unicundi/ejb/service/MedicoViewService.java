@@ -18,10 +18,10 @@ public class MedicoViewService implements IMedicoViewService {
     private IMedicoViewRepository repository;
 
     @Override
-    public PagedListDto buscar(int pageNumber, int pageSize) {
+    public PagedListDto buscar(int pagina, int tamano) {
         // Listar
-        List<MedicoView> medicoViewList = repository.findAll(pageNumber, pageSize);
+        List<MedicoView> medicoViewList = repository.findAll(pagina, tamano);
         // PagedList
-        return new PagedListDto(medicoViewList, repository.count(), pageNumber, pageSize);
+        return new PagedListDto(medicoViewList, repository.count(), pagina, tamano);
     }
 }

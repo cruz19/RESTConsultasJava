@@ -5,7 +5,6 @@ import co.edu.unicundi.ejb.dtos.ExamenDto;
 import co.edu.unicundi.ejb.dtos.ExamenesConsultaDto;
 import co.edu.unicundi.ejb.entity.Consulta;
 import co.edu.unicundi.ejb.entity.ConsultaExamen;
-import co.edu.unicundi.ejb.entity.ConsultaExamenPK;
 import co.edu.unicundi.ejb.entity.Examen;
 import co.edu.unicundi.ejb.exceptions.EmptyModelException;
 import co.edu.unicundi.ejb.exceptions.IntegrityException;
@@ -14,6 +13,7 @@ import co.edu.unicundi.ejb.interfaces.IConsultaExamenService;
 import co.edu.unicundi.ejb.repository.IConsultaExamenRepository;
 import co.edu.unicundi.ejb.repository.IConsultaRepository;
 import co.edu.unicundi.ejb.repository.IExamenRepository;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -61,17 +61,22 @@ public class ConsultaExamenServiceImpl implements IConsultaExamenService {
         } else {
             throw new IntegrityException("El id del examen es requerido");
         }
-        
+        // Verificar si la relación ya existe
+        boolean exists = consultaExamenRepository
+                        .findByPK(consultaExamen.getConsulta().getId(), consultaExamen.getExamen().getId());
+        if (exists){
+            throw new IntegrityException("La relación consulta-examen ya ha sido creada");
+        }
         consultaExamenRepository.create(consultaExamen);
     }
 
     @Override
-    public void eliminar(ConsultaExamenPK id) throws ModelNotFoundException {
-        ConsultaExamen consultaExamen = consultaExamenRepository.find(id);
-        if (consultaExamen == null){
-            throw new ModelNotFoundException("No existe un registro con el id enviado");
+    public void eliminar(Integer idConsulta, Integer idExamen) throws ModelNotFoundException {
+        boolean exists = consultaExamenRepository.findByPK(idConsulta, idExamen);
+        if (!exists){
+            throw new ModelNotFoundException("No existe un registro con la relación consulta-examen enviada");
         }
-        consultaExamenRepository.remove(consultaExamen);
+        consultaExamenRepository.removeByPK(idConsulta, idExamen);
     }
 
     @Override
@@ -85,9 +90,12 @@ public class ConsultaExamenServiceImpl implements IConsultaExamenService {
         // Examenes consulta Dto
         ExamenesConsultaDto examenesConsulta = new ExamenesConsultaDto();
         examenesConsulta.setConsulta(modelMapper.map(consulta, ConsultaDto.class));
+
+        List<ExamenDto> examenes = new ArrayList<>();
         for (ConsultaExamen ce : consultaExamenList){
-            examenesConsulta.getExamenes().add(modelMapper.map(ce.getExamen(), ExamenDto.class));
+            examenes.add(modelMapper.map(ce.getExamen(), ExamenDto.class));
         }
+        examenesConsulta.setExamenes(examenes);
         examenesConsulta.getConsulta().setDetallesConsulta(null);
         examenesConsulta.getConsulta().setMedico(null);
         

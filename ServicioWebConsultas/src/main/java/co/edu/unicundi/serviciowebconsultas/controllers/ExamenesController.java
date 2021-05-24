@@ -33,10 +33,10 @@ public class ExamenesController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response listar(
-            @QueryParam("pageNumber") Integer pageNumber,
-            @QueryParam("pageSize") Integer pageSize
+        @QueryParam("pagina") Integer pagina,
+        @QueryParam("tamano") Integer tamano
     ) {
-        PagedListDto examenes = examenService.buscar(pageNumber, pageSize);
+        PagedListDto examenes = examenService.buscar(pagina, tamano);
         return Response
                 .status(Response.Status.OK)
                 .entity(examenes)

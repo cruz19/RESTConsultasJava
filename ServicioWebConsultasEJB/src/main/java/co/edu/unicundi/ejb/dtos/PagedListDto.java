@@ -9,50 +9,50 @@ import java.util.List;
  * @param <T>
  */
 public class PagedListDto<T> implements Serializable {
-    private Integer currentPage;
-    private Integer totalPages;
-    private Integer pageSize;
-    private Integer totalCount;
+    private Integer paginaActual;
+    private Integer totalPaginas;
+    private Integer tamanoPagina;
+    private Integer totalRegistros;
     private List<T> items;
     
-    public PagedListDto(List<T> items, Integer count, Integer pageNumber, Integer pageSize){
+    public PagedListDto(List<T> items, Integer cantidad, Integer pagina, Integer tamano){
         this.items = items;
-        this.totalCount = count;
-        this.pageSize = pageSize;
-        this.currentPage = pageNumber;
-        this.totalPages = (int)Math.ceil(count / (double) pageSize);
+        this.totalRegistros = cantidad;
+        this.tamanoPagina = tamano;
+        this.paginaActual = pagina;
+        this.totalPaginas = (int)Math.ceil(cantidad / (double) tamano);
     }
 
-    public Integer getCurrentPage() {
-        return currentPage;
+    public Integer getPaginaActual() {
+        return paginaActual;
     }
 
-    public void setCurrentPage(Integer currentPage) {
-        this.currentPage = currentPage;
+    public void setPaginaActual(Integer paginaActual) {
+        this.paginaActual = paginaActual;
     }
 
-    public Integer getTotalPages() {
-        return totalPages;
+    public Integer getTotalPaginas() {
+        return totalPaginas;
     }
 
-    public void setTotalPages(Integer totalPages) {
-        this.totalPages = totalPages;
+    public void setTotalPaginas(Integer totalPaginas) {
+        this.totalPaginas = totalPaginas;
     }
 
-    public Integer getPageSize() {
-        return pageSize;
+    public Integer getTamanoPagina() {
+        return tamanoPagina;
     }
 
-    public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
+    public void setTamanoPagina(Integer tamano) {
+        this.tamanoPagina = tamano;
     }
 
-    public Integer getTotalCount() {
-        return totalCount;
+    public Integer getTotalRegistros() {
+        return totalRegistros;
     }
 
-    public void setTotalCount(Integer totalCount) {
-        this.totalCount = totalCount;
+    public void setTotalRegistros(Integer cantidad) {
+        this.totalRegistros = cantidad;
     }
 
     public List<T> getItems() {

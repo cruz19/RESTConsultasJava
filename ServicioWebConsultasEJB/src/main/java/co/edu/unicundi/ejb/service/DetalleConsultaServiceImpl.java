@@ -33,26 +33,26 @@ public class DetalleConsultaServiceImpl implements IDetalleConsultaService {
     private IConsultaRepository consultaRepository;
 
     @Override
-    public PagedListDto buscar(Integer pageNumber, Integer pageSize, boolean details) {
+    public PagedListDto buscar(Integer pagina, Integer tamano, boolean detalles) {
         // Listar
-        List<DetalleConsulta> dcList = dcRepository.findAll(pageNumber, pageSize);
+        List<DetalleConsulta> dcList = dcRepository.findAll(pagina, tamano);
         // Mapper
         Type listType = new TypeToken<List<DetalleConsultaDto>>(){}.getType();
         List<DetalleConsultaDto> dcDTOList = modelMapper.map(dcList, listType);
         
         // Detalles
-        if (details){
+        if (detalles){
             for(DetalleConsultaDto dc : dcDTOList) { dc.getConsulta().setMedico(null); dc.getConsulta().setDetallesConsulta(null); }
         } else {
             for(DetalleConsultaDto dc : dcDTOList){ dc.setConsulta(null); }
         }
         
         // PagedList
-        return new PagedListDto(dcDTOList, consultaRepository.count(), pageNumber, pageSize);
+        return new PagedListDto(dcDTOList, consultaRepository.count(), pagina, tamano);
     }
 
     @Override
-    public DetalleConsultaDto buscarPorId(Integer id, boolean details) throws ModelNotFoundException {
+    public DetalleConsultaDto buscarPorId(Integer id, boolean detalles) throws ModelNotFoundException {
         DetalleConsulta dc = dcRepository.find(id);
         if (dc == null){
             throw new ModelNotFoundException("No existe una consulta con el id enviado");
@@ -60,7 +60,7 @@ public class DetalleConsultaServiceImpl implements IDetalleConsultaService {
         DetalleConsultaDto dcDTO = modelMapper.map(dc, DetalleConsultaDto.class);
         
         // Detalles
-        if (details){
+        if (detalles){
             dcDTO.getConsulta().setMedico(null);
             dcDTO.getConsulta().setDetallesConsulta(null);
         }
@@ -121,7 +121,7 @@ public class DetalleConsultaServiceImpl implements IDetalleConsultaService {
         if (dc == null){
             throw new ModelNotFoundException("No existe un detalle consulta con el id enviado");
         }
-        dcRepository.remove(dc);
+        dcRepository.remove(id);
     }
     
 }

@@ -1,15 +1,9 @@
 package co.edu.unicundi.ejb.service;
 
-import co.edu.unicundi.ejb.dtos.ConsultaDto;
-import co.edu.unicundi.ejb.dtos.DetalleConsultaDto;
 import co.edu.unicundi.ejb.dtos.ExamenDto;
 import co.edu.unicundi.ejb.dtos.PagedListDto;
-import co.edu.unicundi.ejb.entity.Consulta;
-import co.edu.unicundi.ejb.entity.DetalleConsulta;
 import co.edu.unicundi.ejb.entity.Examen;
-import co.edu.unicundi.ejb.entity.Medico;
 import co.edu.unicundi.ejb.exceptions.EmptyModelException;
-import co.edu.unicundi.ejb.exceptions.IntegrityException;
 import co.edu.unicundi.ejb.exceptions.ModelNotFoundException;
 import co.edu.unicundi.ejb.interfaces.IExamenService;
 import co.edu.unicundi.ejb.repository.IExamenRepository;
@@ -33,15 +27,15 @@ public class ExamenServiceImpl implements IExamenService {
     ModelMapper modelMapper = new ModelMapper();
 
     @Override
-    public PagedListDto buscar(Integer pageNumber, Integer pageSize) {
+    public PagedListDto buscar(Integer pagina, Integer tamano) {
         // Listar
-        List<Examen> examenList = repository.findAll(pageNumber, pageSize);
+        List<Examen> examenList = repository.findAll(pagina, tamano);
         // Mapper
         Type listType = new TypeToken<List<ExamenDto>>(){}.getType();
         List<ExamenDto> examenDtoList = modelMapper.map(examenList, listType);
         
         // PagedList
-        return new PagedListDto(examenDtoList, repository.count(), pageNumber, pageSize);
+        return new PagedListDto(examenDtoList, repository.count(), pagina, tamano);
     }
 
     @Override
@@ -87,7 +81,7 @@ public class ExamenServiceImpl implements IExamenService {
         if (examen == null){
             throw new ModelNotFoundException("No existe un examen con el id enviado");
         }
-        repository.remove(examen);
+        repository.remove(id);
     }
     
 }
