@@ -94,27 +94,26 @@ public class ConsultaServiceImpl implements IConsultaService {
         // Exámenes consulta
         if(consulta.getExamenesConsulta() != null) {
             for (ConsultaExamen ce : consulta.getExamenesConsulta()) {
-                if (ce.getExamen().getId() != null){
-                    if (examenRepository.find(ce.getExamen().getId()) == null){
-                        throw new ModelNotFoundException("No existe un examen con el id => " + ce.getExamen().getId());
-                    }
-                } else {
-                    throw new IntegrityException("El id del examen es requerido");
+                if (ce.getExamen() == null || ce.getExamen().getId() == null){
+                    throw new IntegrityException("El examen es requerido");
+                }
+                if (examenRepository.find(ce.getExamen().getId()) == null){
+                    throw new ModelNotFoundException("No existe un examen con el id => " + ce.getExamen().getId());
                 }
                 ce.setConsulta(consulta);
             }
         }
         // Médico
-        if (consulta.getMedico().getId() != null){
-            Medico medico = medicoRepository.find(consulta.getMedico().getId());
-            if (medico == null){
-                throw new ModelNotFoundException("No existe un médico con el id enviado");
-            }
-            consulta.setMedico(medico);
-            medico.getConsultas().add(consulta);
-        } else {
+        if (consulta.getMedico().getId() == null){
             throw new IntegrityException("El id del médico es requerido");
         }
+        Medico medico = medicoRepository.find(consulta.getMedico().getId());
+        if (medico == null){
+            throw new ModelNotFoundException("No existe un médico con el id enviado");
+        }
+        consulta.setMedico(medico);
+        medico.getConsultas().add(consulta);
+        
         consultaRepository.create(consulta);
     }
 
@@ -142,12 +141,11 @@ public class ConsultaServiceImpl implements IConsultaService {
         // Exámenes consulta
         if(consulta.getExamenesConsulta()!= null) {
             for (ConsultaExamen ce : consulta.getExamenesConsulta()) {
-                if (ce.getExamen().getId() != null){
-                    if (examenRepository.find(ce.getExamen().getId()) == null){
-                        throw new ModelNotFoundException("No existe un examen con el id => " + ce.getExamen().getId());
-                    }
-                } else {
-                    throw new IntegrityException("El id del examen es requerido");
+                if (ce.getExamen() == null || ce.getExamen().getId() == null){
+                    throw new IntegrityException("El examen es requerido");
+                }
+                if (examenRepository.find(ce.getExamen().getId()) == null){
+                    throw new ModelNotFoundException("No existe un examen con el id => " + ce.getExamen().getId());
                 }
                 ce.setConsulta(consultaEntity);
             }

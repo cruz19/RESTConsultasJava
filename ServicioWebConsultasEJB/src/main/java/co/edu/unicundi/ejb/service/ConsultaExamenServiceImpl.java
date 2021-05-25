@@ -42,30 +42,29 @@ public class ConsultaExamenServiceImpl implements IConsultaExamenService {
             throw new EmptyModelException("El objeto está vacío");
         }
         // Consulta
-        if (consultaExamen.getConsulta().getId() != null){
-            Consulta consulta = consultaRepository.find(consultaExamen.getConsulta().getId());
-            if (consulta == null){
-                throw new ModelNotFoundException("No existe una consulta con el id enviado");
-            }
-            consultaExamen.setConsulta(consulta);
-        } else {
-            throw new IntegrityException("El id de la consulta es requerido");
+        if (consultaExamen.getConsulta() == null || consultaExamen.getConsulta().getId() == null){
+            throw new EmptyModelException("La consulta es requerida");
         }
+        Consulta consulta = consultaRepository.find(consultaExamen.getConsulta().getId());
+        if (consulta == null){
+            throw new ModelNotFoundException("No existe una consulta con el id enviado");
+        }
+        consultaExamen.setConsulta(consulta);
+
         // Examen
-        if (consultaExamen.getExamen().getId() != null){
-            Examen examen = examenRepository.find(consultaExamen.getExamen().getId());
-            if (examen == null){
-                throw new ModelNotFoundException("No existe un examen con el id enviado");
-            }
-            consultaExamen.setExamen(examen);
-        } else {
-            throw new IntegrityException("El id del examen es requerido");
+        if (consultaExamen.getExamen() == null || consultaExamen.getExamen().getId() == null){
+            throw new EmptyModelException("El examen es requerido");
         }
+        Examen examen = examenRepository.find(consultaExamen.getExamen().getId());
+        if (examen == null){
+            throw new ModelNotFoundException("No existe un examen con el id enviado");
+        }
+        consultaExamen.setExamen(examen);
         // Verificar si la relación ya existe
         boolean exists = consultaExamenRepository
                         .findByPK(consultaExamen.getConsulta().getId(), consultaExamen.getExamen().getId());
         if (exists){
-            throw new IntegrityException("La relación consulta-examen ya ha sido creada");
+            throw new IntegrityException("La relación consulta-examen ya ha existe");
         }
         consultaExamenRepository.create(consultaExamen);
     }

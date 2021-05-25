@@ -4,7 +4,6 @@ import co.edu.unicundi.ejb.dtos.ConsultaDto;
 import co.edu.unicundi.ejb.dtos.ExamenesConsultaDto;
 import co.edu.unicundi.ejb.dtos.PagedListDto;
 import co.edu.unicundi.ejb.entity.Consulta;
-import co.edu.unicundi.ejb.entity.ConsultaExamen;
 import co.edu.unicundi.ejb.exceptions.EmptyModelException;
 import co.edu.unicundi.ejb.exceptions.IntegrityException;
 import co.edu.unicundi.ejb.exceptions.ModelNotFoundException;
