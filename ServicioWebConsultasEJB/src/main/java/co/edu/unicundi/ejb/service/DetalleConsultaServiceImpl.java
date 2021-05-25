@@ -48,7 +48,7 @@ public class DetalleConsultaServiceImpl implements IDetalleConsultaService {
         }
         
         // PagedList
-        return new PagedListDto(dcDTOList, consultaRepository.count(), pagina, tamano);
+        return new PagedListDto(dcDTOList, dcRepository.count(), pagina, tamano);
     }
 
     @Override

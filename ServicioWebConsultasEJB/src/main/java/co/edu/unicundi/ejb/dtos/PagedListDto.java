@@ -18,9 +18,9 @@ public class PagedListDto<T> implements Serializable {
     public PagedListDto(List<T> items, Integer cantidad, Integer pagina, Integer tamano){
         this.items = items;
         this.totalRegistros = cantidad;
-        this.tamanoPagina = tamano;
-        this.paginaActual = pagina;
-        this.totalPaginas = (int)Math.ceil(cantidad / (double) tamano);
+        this.tamanoPagina = (tamano==null || tamano<=0) ? 10 : tamano;
+        this.paginaActual = (pagina==null || pagina<=0) ? 1 : pagina;
+        this.totalPaginas = (int)Math.ceil(cantidad / (double) this.tamanoPagina);
     }
 
     public Integer getPaginaActual() {

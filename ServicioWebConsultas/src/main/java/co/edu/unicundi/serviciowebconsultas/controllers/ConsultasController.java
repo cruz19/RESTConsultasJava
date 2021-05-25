@@ -32,9 +32,9 @@ public class ConsultasController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response listar(
-            @QueryParam("pagina") Integer pagina,
-            @QueryParam("tamano") Integer tamano,
-            @QueryParam("detalles") boolean detalles
+        @QueryParam("pagina") Integer pagina,
+        @QueryParam("tamano") Integer tamano,
+        @QueryParam("detalles") boolean detalles
     ) {
         PagedListDto consultas = consultaService.buscar(pagina, tamano, detalles);
         return Response

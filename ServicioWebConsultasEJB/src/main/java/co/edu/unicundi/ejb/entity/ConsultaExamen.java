@@ -19,7 +19,10 @@ import org.codehaus.jackson.annotate.JsonBackReference;
 @Entity
 @Table(name = "consulta_examen")
 @NamedQueries({
+    @NamedQuery(name = "ConsultaExamen.listar", query = "SELECT e FROM ConsultaExamen e"),
+    @NamedQuery(name = "ConsultaExamen.contar", query = "SELECT COUNT(e) FROM ConsultaExamen e"),
     @NamedQuery(name = "ConsultaExamen.buscarPorConsulta", query = "SELECT e FROM ConsultaExamen e WHERE e.consulta.id = :idConsulta"),
+    @NamedQuery(name = "ConsultaExamen.buscarPorExamen", query = "SELECT e FROM ConsultaExamen e WHERE e.examen.id = :idExamen"),
     @NamedQuery(name = "ConsultaExamen.buscar", query = "SELECT COUNT(e) FROM ConsultaExamen e WHERE e.consulta.id = :idConsulta AND e.examen.id = :idExamen"),
     @NamedQuery(name = "ConsultaExamen.eliminar", query = "DELETE FROM ConsultaExamen e WHERE e.consulta.id = :idConsulta AND e.examen.id = :idExamen")
 })

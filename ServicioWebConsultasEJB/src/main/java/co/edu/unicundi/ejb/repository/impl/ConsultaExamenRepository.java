@@ -34,6 +34,13 @@ public class ConsultaExamenRepository extends Repository<ConsultaExamen> impleme
         query.setParameter("idConsulta", idConsulta);
         return query.getResultList();
     }
+    
+    @Override
+    public List<ConsultaExamen> findByExamen(Integer idExamen) {
+        TypedQuery<ConsultaExamen> query = em.createNamedQuery("ConsultaExamen.buscarPorExamen", ConsultaExamen.class);
+        query.setParameter("idExamen", idExamen);
+        return query.getResultList();
+    }
 
     @Override
     public boolean findByPK(Integer idConsulta, Integer idExamen) {
@@ -51,6 +58,5 @@ public class ConsultaExamenRepository extends Repository<ConsultaExamen> impleme
         query.setParameter("idExamen", idExamen);
         query.executeUpdate();
     }
-    
     
 }

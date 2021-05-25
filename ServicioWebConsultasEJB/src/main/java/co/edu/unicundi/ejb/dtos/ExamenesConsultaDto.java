@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class ExamenesConsultaDto {
     private ConsultaDto consulta;
-    private List<ExamenDto> examenes;
+    private List<ExamenInfoDto> examenes;
 
     public ConsultaDto getConsulta() {
         return consulta;
@@ -18,11 +18,11 @@ public class ExamenesConsultaDto {
         this.consulta = consulta;
     }
 
-    public List<ExamenDto> getExamenes() {
+    public List<ExamenInfoDto> getExamenes() {
         return examenes;
     }
 
-    public void setExamenes(List<ExamenDto> examenes) {
+    public void setExamenes(List<ExamenInfoDto> examenes) {
         this.examenes = examenes;
     }
 }

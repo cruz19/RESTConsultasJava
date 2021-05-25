@@ -11,6 +11,7 @@ import javax.ejb.Local;
 @Local
 public interface IConsultaExamenRepository extends IRepository<ConsultaExamen> {
     public List<ConsultaExamen> findByConsulta(Integer idConsulta);
+    public List<ConsultaExamen> findByExamen(Integer idExamen);
     public boolean findByPK(Integer idConsulta, Integer idExamen);
     public void removeByPK(Integer idConsulta, Integer idExamen);
 }

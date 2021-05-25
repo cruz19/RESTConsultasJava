@@ -1,12 +1,13 @@
 package co.edu.unicundi.ejb.dtos;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author Steven Cruz
  * @author Daniel Zambrano
  */
-public class ConsultaDto {
+public class ConsultaDto implements Serializable {
     private Integer id;   
     private List<DetalleConsultaDto> detallesConsulta;
     private String fechaStr;

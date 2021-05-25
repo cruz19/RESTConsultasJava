@@ -1,8 +1,10 @@
 package co.edu.unicundi.ejb.service;
 
 import co.edu.unicundi.ejb.dtos.ConsultaDto;
-import co.edu.unicundi.ejb.dtos.ExamenDto;
+import co.edu.unicundi.ejb.dtos.ConsultaExamenDto;
+import co.edu.unicundi.ejb.dtos.ExamenInfoDto;
 import co.edu.unicundi.ejb.dtos.ExamenesConsultaDto;
+import co.edu.unicundi.ejb.dtos.PagedListDto;
 import co.edu.unicundi.ejb.entity.Consulta;
 import co.edu.unicundi.ejb.entity.ConsultaExamen;
 import co.edu.unicundi.ejb.entity.Examen;
@@ -13,11 +15,13 @@ import co.edu.unicundi.ejb.interfaces.IConsultaExamenService;
 import co.edu.unicundi.ejb.repository.IConsultaExamenRepository;
 import co.edu.unicundi.ejb.repository.IConsultaRepository;
 import co.edu.unicundi.ejb.repository.IExamenRepository;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 
 /**
  * @author Steven Cruz
@@ -90,15 +94,33 @@ public class ConsultaExamenServiceImpl implements IConsultaExamenService {
         ExamenesConsultaDto examenesConsulta = new ExamenesConsultaDto();
         examenesConsulta.setConsulta(modelMapper.map(consulta, ConsultaDto.class));
 
-        List<ExamenDto> examenes = new ArrayList<>();
+        List<ExamenInfoDto> examenes = new ArrayList<>();
         for (ConsultaExamen ce : consultaExamenList){
-            examenes.add(modelMapper.map(ce.getExamen(), ExamenDto.class));
+            ExamenInfoDto examen = modelMapper.map(ce.getExamen(), ExamenInfoDto.class);
+            examen.setInfoAdicional(ce.getInfoAdicional());
+            examenes.add(examen);
         }
         examenesConsulta.setExamenes(examenes);
         examenesConsulta.getConsulta().setDetallesConsulta(null);
         examenesConsulta.getConsulta().setMedico(null);
         
         return examenesConsulta;
+    }
+
+    @Override
+    public PagedListDto buscar(Integer pagina, Integer tamano) {
+        // Listar
+        List<ConsultaExamen> list = consultaExamenRepository.findAll(pagina, tamano);
+        // Mapper
+        Type listType = new TypeToken<List<ConsultaExamenDto>>(){}.getType();
+        List<ConsultaExamenDto> listDto = modelMapper.map(list, listType);
+        
+        for(ConsultaExamenDto c : listDto){
+            c.getConsulta().setMedico(null);
+            c.getConsulta().setDetallesConsulta(null);
+        }
+        // PagedList
+        return new PagedListDto(listDto, consultaExamenRepository.count(), pagina, tamano);
     }
     
 }
