@@ -2,16 +2,19 @@ package co.edu.unicundi.ejb.service;
 
 import co.edu.unicundi.ejb.dtos.ConsultaDto;
 import co.edu.unicundi.ejb.dtos.MedicoDto;
+import co.edu.unicundi.ejb.dtos.PagedListDto;
 import co.edu.unicundi.ejb.entity.Medico;
 import co.edu.unicundi.ejb.exceptions.EmptyModelException;
 import co.edu.unicundi.ejb.exceptions.IntegrityException;
 import co.edu.unicundi.ejb.exceptions.ModelNotFoundException;
 import co.edu.unicundi.ejb.interfaces.IMedicoService;
 import co.edu.unicundi.ejb.repository.IMedicoRepository;
+import java.lang.reflect.Type;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 
 /**
  * @author Daniel Zambrano
@@ -26,21 +29,34 @@ public class MedicoServiceImpl implements IMedicoService {
     ModelMapper modelMapper = new ModelMapper();
 
     @Override
-    public List<Medico> buscar() {
-        return repository.findAll();
+    public PagedListDto buscar(Integer pagina, Integer tamano, boolean detalles) {
+        // Listar
+        List<Medico> medicoList = repository.findAll(pagina, tamano);
+        // Mapper
+        Type listType = new TypeToken<List<MedicoDto>>(){}.getType();
+        List<MedicoDto> medicoDtoList = modelMapper.map(medicoList, listType);
+        
+        // Detalles
+        if (detalles){
+            for(MedicoDto medico : medicoDtoList)
+                for(ConsultaDto consulta : medico.getConsultas()){ consulta.setMedico(null); consulta.setDetallesConsulta(null); }
+        } else {
+            for(MedicoDto medico : medicoDtoList) { medico.setConsultas(null); medico.setDireccion(null); }
+        }
+        
+        // PagedList
+        return new PagedListDto(medicoDtoList, repository.count(), pagina, tamano);
     }
 
     @Override
-    public MedicoDto buscarPorId(Integer id, boolean details) throws ModelNotFoundException {
+    public MedicoDto buscarPorId(Integer id, boolean detalles) throws ModelNotFoundException {
         Medico medico = repository.find(id);
         if (medico == null){
             throw new ModelNotFoundException("No existe un médico con el id enviado");
         }
         MedicoDto medicoDTO = modelMapper.map(medico, MedicoDto.class);
-        if (details){
-            for(ConsultaDto c : medicoDTO.getConsultas()){
-                c.setMedico(null);
-            }
+        if (detalles){
+            for(ConsultaDto c : medicoDTO.getConsultas()){ c.setMedico(null); c.setDetallesConsulta(null); }
         } else {
             medicoDTO.setConsultas(null);
             medicoDTO.setDireccion(null);
@@ -97,7 +113,7 @@ public class MedicoServiceImpl implements IMedicoService {
         if (medico == null){
             throw new ModelNotFoundException("No existe un médico con el id enviado");
         }
-        repository.remove(medico);
+        repository.remove(id);
     }
     
 }

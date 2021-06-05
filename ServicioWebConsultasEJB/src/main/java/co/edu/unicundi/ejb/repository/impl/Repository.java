@@ -3,6 +3,7 @@ package co.edu.unicundi.ejb.repository.impl;
 import co.edu.unicundi.ejb.repository.IRepository;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 /**
@@ -21,9 +22,17 @@ public abstract class Repository<T> implements IRepository<T> {
     protected abstract EntityManager getEntityManager();
 
     @Override
-    public List<T> findAll() {
-        String namedQuery = entityClass.getSimpleName() + ".findAll";
-        TypedQuery<T> query = getEntityManager().createNamedQuery(namedQuery, entityClass);
+    public List<T> findAll(Integer pageNumber, Integer pageSize) {
+        getEntityManager().getEntityManagerFactory().getCache().evictAll();
+        
+        // Default values
+        pageNumber = pageNumber == null || pageNumber <= 0 ? 1 : pageNumber;
+        pageSize = pageSize == null  || pageSize <= 0 ? 10 : pageSize;
+
+        String namedQuery = entityClass.getSimpleName() + ".listar";
+        TypedQuery<T> query = getEntityManager().createNamedQuery(namedQuery, entityClass)
+                                                .setFirstResult((pageNumber - 1) * pageSize) // Skip
+                                                .setMaxResults(pageSize); // Take
         return (List<T>) query.getResultList();
     }
 
@@ -43,7 +52,17 @@ public abstract class Repository<T> implements IRepository<T> {
     }
 
     @Override
-    public void remove(T entity) {
-        getEntityManager().remove(getEntityManager().merge(entity));
+    public void remove(Object id) {
+        String namedQuery = entityClass.getSimpleName() + ".eliminar";
+        Query query = getEntityManager().createNamedQuery(namedQuery);
+        query.setParameter("id", id);
+        query.executeUpdate();
+    }
+    
+    @Override
+    public int count(){
+        String namedQuery = entityClass.getSimpleName() + ".contar";
+        Query query = getEntityManager().createNamedQuery(namedQuery);
+        return ((Number)query.getSingleResult()).intValue();
     }
 }

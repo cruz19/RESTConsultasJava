@@ -1,15 +1,16 @@
 package co.edu.unicundi.ejb.dtos;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author Steven Cruz
  * @author Daniel Zambrano
  */
-public class ConsultaDto {
+public class ConsultaDto implements Serializable {
     private Integer id;   
     private List<DetalleConsultaDto> detallesConsulta;
-    private String fechaFormat;
+    private String fechaStr;
     private MedicoDto medico;
 
     public Integer getId() {
@@ -19,7 +20,7 @@ public class ConsultaDto {
     public void setId(Integer id) {
         this.id = id;
     }
-
+    
     public List<DetalleConsultaDto> getDetallesConsulta() {
         return detallesConsulta;
     }
@@ -28,12 +29,12 @@ public class ConsultaDto {
         this.detallesConsulta = detallesConsulta;
     }
 
-    public String getFechaFormat() {
-        return fechaFormat;
+    public String getFechaStr() {
+        return fechaStr;
     }
 
-    public void setFechaFormat(String fechaFormat) {
-        this.fechaFormat = fechaFormat;
+    public void setFechaStr(String fechaStr) {
+        this.fechaStr = fechaStr;
     }
 
     public MedicoDto getMedico() {

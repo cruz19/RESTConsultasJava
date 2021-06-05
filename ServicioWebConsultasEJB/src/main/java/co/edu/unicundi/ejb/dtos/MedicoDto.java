@@ -14,7 +14,7 @@ public class MedicoDto implements Serializable {
     private String correo;
     private DireccionDto direccion;
     private List<ConsultaDto> consultas;
-    private String fechaNacimientoFormat;
+    private String fechaNacimientoStr;
 
     public Integer getId() {
         return id;
@@ -64,11 +64,11 @@ public class MedicoDto implements Serializable {
         this.consultas = consultas;
     }
 
-    public String getFechaNacimientoFormat() {
-        return fechaNacimientoFormat;
+    public String getFechaNacimientoStr() {
+        return fechaNacimientoStr;
     }
 
-    public void setFechaNacimientoFormat(String fechaNacimientoFormat) {
-        this.fechaNacimientoFormat = fechaNacimientoFormat;
+    public void setFechaNacimientoStr(String fechaNacimientoStr) {
+        this.fechaNacimientoStr = fechaNacimientoStr;
     }
 }

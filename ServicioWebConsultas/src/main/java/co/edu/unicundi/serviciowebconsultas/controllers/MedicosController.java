@@ -1,12 +1,12 @@
 package co.edu.unicundi.serviciowebconsultas.controllers;
 
 import co.edu.unicundi.ejb.dtos.MedicoDto;
+import co.edu.unicundi.ejb.dtos.PagedListDto;
 import co.edu.unicundi.ejb.entity.Medico;
 import co.edu.unicundi.ejb.exceptions.EmptyModelException;
 import co.edu.unicundi.ejb.exceptions.IntegrityException;
 import co.edu.unicundi.ejb.exceptions.ModelNotFoundException;
 import co.edu.unicundi.ejb.interfaces.IMedicoService;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -33,8 +33,12 @@ public class MedicosController {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response listar() {
-        List<Medico> consultas = medicoService.buscar();
+    public Response listar(
+        @QueryParam("pagina") Integer pagina,
+        @QueryParam("tamano") Integer tamano,
+        @QueryParam("detalles") boolean detalles
+    ) {
+        PagedListDto consultas = medicoService.buscar(pagina, tamano, detalles);
         return Response
                 .status(Response.Status.OK)
                 .entity(consultas)
@@ -44,19 +48,11 @@ public class MedicosController {
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response buscarPorId(@PathParam("id") int id) throws ModelNotFoundException{
-        MedicoDto medico = medicoService.buscarPorId(id, false);
-        return Response
-                .status(Response.Status.OK)
-                .entity(medico)
-                .build();
-    }
-        
-    @GET
-    @Path("{id}/detalles")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response buscarPorIdConDetalles(@PathParam("id") int id) throws ModelNotFoundException{
-        MedicoDto medico = medicoService.buscarPorId(id, true);
+    public Response buscarPorId(
+        @PathParam("id") int id,
+        @QueryParam("detalles") boolean detalles
+    ) throws ModelNotFoundException{
+        MedicoDto medico = medicoService.buscarPorId(id, detalles);
         return Response
                 .status(Response.Status.OK)
                 .entity(medico)

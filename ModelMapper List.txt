@@ -1,0 +1,7 @@
+        List<Consulta> consultaList = consultaRepository.findAll();
+        Type listType = new TypeToken<List<ConsultaDto>>(){}.getType();
+        List<ConsultaDto> consultaDtoList = modelMapper.map(consultaList, listType);
+        for(ConsultaDto c : consultaDtoList){
+            c.getMedico().setConsultas(null);
+        }
+        return consultaDtoList;

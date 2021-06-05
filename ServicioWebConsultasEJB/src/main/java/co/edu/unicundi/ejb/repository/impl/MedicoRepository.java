@@ -28,11 +28,10 @@ public class MedicoRepository extends Repository<Medico> implements IMedicoRepos
 
     @Override
     public boolean findByEmail(String email, int id) {
-        Query query = em.createNamedQuery("Medico.findByEmail");
+        Query query = em.createNamedQuery("Medico.buscarPorEmail");
         query.setParameter("email", email);
         query.setParameter("id", id);
         int count = ((Number)query.getSingleResult()).intValue();
-        System.out.println("count = " + count);
         return count > 0;
     }
 }

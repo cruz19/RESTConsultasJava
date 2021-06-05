@@ -30,18 +30,31 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(co.edu.unicundi.serviciowebconsultas.controllers.ConsultasController.class);
+        resources.add(co.edu.unicundi.serviciowebconsultas.controllers.ConsultasExamenesController.class);
+        resources.add(co.edu.unicundi.serviciowebconsultas.controllers.DetallesConsultasController.class);
+        resources.add(co.edu.unicundi.serviciowebconsultas.controllers.ExamenesController.class);
+        resources.add(co.edu.unicundi.serviciowebconsultas.controllers.LoginController.class);
+        resources.add(co.edu.unicundi.serviciowebconsultas.controllers.LogoutController.class);
         resources.add(co.edu.unicundi.serviciowebconsultas.controllers.MedicosController.class);
+        resources.add(co.edu.unicundi.serviciowebconsultas.controllers.MedicosViewController.class);
+        resources.add(co.edu.unicundi.serviciowebconsultas.controllers.UsuariosController.class);
         resources.add(co.edu.unicundi.serviciowebconsultas.exceptions.filters.BadRequestExceptionFilter.class);
         resources.add(co.edu.unicundi.serviciowebconsultas.exceptions.filters.ConstraintViolationExceptionFilter.class);
         resources.add(co.edu.unicundi.serviciowebconsultas.exceptions.filters.EmptyModelExceptionFilter.class);
         resources.add(co.edu.unicundi.serviciowebconsultas.exceptions.filters.ExceptionFilter.class);
+        resources.add(co.edu.unicundi.serviciowebconsultas.exceptions.filters.ExpiredJwtExceptionFilter.class);
         resources.add(co.edu.unicundi.serviciowebconsultas.exceptions.filters.IntegrityExceptionFilter.class);
+        resources.add(co.edu.unicundi.serviciowebconsultas.exceptions.filters.LoginExceptionFilter.class);
+        resources.add(co.edu.unicundi.serviciowebconsultas.exceptions.filters.MalformedJwtExceptionFilter.class);
         resources.add(co.edu.unicundi.serviciowebconsultas.exceptions.filters.ModelNotFoundExceptionFilter.class);
         resources.add(co.edu.unicundi.serviciowebconsultas.exceptions.filters.NotAllowedExceptionFilter.class);
         resources.add(co.edu.unicundi.serviciowebconsultas.exceptions.filters.NotFoundExceptionFilter.class);
         resources.add(co.edu.unicundi.serviciowebconsultas.exceptions.filters.NotSupportedExceptionFilter.class);
         resources.add(co.edu.unicundi.serviciowebconsultas.exceptions.filters.NullPointerExceptionFilter.class);
+        resources.add(co.edu.unicundi.serviciowebconsultas.exceptions.filters.SignatureExceptionFilter.class);
         resources.add(co.edu.unicundi.serviciowebconsultas.exceptions.filters.WebApplicationExceptionFilter.class);
+        resources.add(co.edu.unicundi.serviciowebconsultas.filters.CorsFilter.class);
+        resources.add(co.edu.unicundi.serviciowebconsultas.filters.Interceptor.class);
     }
     
 }

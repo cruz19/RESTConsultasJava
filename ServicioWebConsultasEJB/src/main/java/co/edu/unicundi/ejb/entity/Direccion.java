@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.MapsId;
+import javax.persistence.NamedQueries;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -18,6 +19,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  */
 @Entity
 @Table(name = "direccion")
+@NamedQueries({})
 public class Direccion implements Serializable {
     private static final long serialVersionUID = 1L;
     
