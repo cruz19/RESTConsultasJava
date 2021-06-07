@@ -29,36 +29,6 @@ public class Interceptor implements ContainerRequestFilter {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         String url = requestContext.getUriInfo().getAbsolutePath().toString();
         // Omitir login y registro
-        if(!url.contains("/login") && !url.contains("/usuarios/guardar")) {
-            String token = requestContext.getHeaderString("Authorization");
-            if (token == null){
-                ErrorDto error = new ErrorDto("El token es requerido", formatter.format(new Date()), url);
-                requestContext.abortWith(
-                    Response.status(Response.Status.UNAUTHORIZED).type(MediaType.APPLICATION_JSON).entity(error).build()
-                );
-            } else {
-                try {
-                    if (url.contains("/logout")){
-                        usuarioService.logout(token);
-                    } else {
-                        // Validar token
-                        usuarioService.validarToken(token);
-                        // Validar permisos
-                        usuarioService.validarPermisos(token, url);
-                    }
-                } catch (JwtTokenException ex) {
-                    ErrorDto error = new ErrorDto(ex.getMessage(), formatter.format(new Date()), url);
-                    requestContext.abortWith(
-                        Response.status(Response.Status.UNAUTHORIZED).type(MediaType.APPLICATION_JSON).entity(error).build()
-                    );
-                } catch (PermissionsException ex) {
-                    ErrorDto error = new ErrorDto(ex.getMessage(), formatter.format(new Date()), url);
-                    requestContext.abortWith(
-                        Response.status(Response.Status.FORBIDDEN).type(MediaType.APPLICATION_JSON).entity(error).build()
-                    );
-                }
-            }
-        }
     }
 }
 

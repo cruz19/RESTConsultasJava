@@ -18,6 +18,10 @@ import java.lang.reflect.Type;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 
@@ -26,6 +30,7 @@ import org.modelmapper.TypeToken;
  * @author Daniel Zambrano
  */
 @Stateless
+@TransactionManagement(TransactionManagementType.CONTAINER)
 public class ConsultaServiceImpl implements IConsultaService {
     
     @EJB
@@ -81,6 +86,7 @@ public class ConsultaServiceImpl implements IConsultaService {
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void guardar(Consulta consulta) throws EmptyModelException, ModelNotFoundException, IntegrityException {
         if (consulta == null){
             throw new EmptyModelException("El objeto consulta está vacío");

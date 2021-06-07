@@ -3,6 +3,7 @@ package co.edu.unicundi.ejb.service;
 import co.edu.unicundi.ejb.dtos.PagedListDto;
 import co.edu.unicundi.ejb.dtos.TokenDto;
 import co.edu.unicundi.ejb.dtos.UsuarioDto;
+import co.edu.unicundi.ejb.entity.Rol;
 import co.edu.unicundi.ejb.entity.Usuario;
 import co.edu.unicundi.ejb.entity.Token;
 import co.edu.unicundi.ejb.exceptions.EmptyModelException;
@@ -12,6 +13,7 @@ import co.edu.unicundi.ejb.exceptions.LoginException;
 import co.edu.unicundi.ejb.exceptions.ModelNotFoundException;
 import co.edu.unicundi.ejb.exceptions.PermissionsException;
 import co.edu.unicundi.ejb.interfaces.IUsuarioService;
+import co.edu.unicundi.ejb.repository.IRolRepository;
 import co.edu.unicundi.ejb.repository.ITokenRepository;
 import co.edu.unicundi.ejb.repository.IUsuarioRepository;
 import io.jsonwebtoken.Claims;
@@ -22,7 +24,6 @@ import java.lang.reflect.Type;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +48,9 @@ public class UsuarioService implements IUsuarioService {
     @EJB
     private ITokenRepository tokenRepository;
     
+    @EJB
+    private IRolRepository rolRepository;
+    
     ModelMapper modelMapper = new ModelMapper();
 
     @Override
@@ -62,17 +66,22 @@ public class UsuarioService implements IUsuarioService {
             
             long tiempoActual = System.currentTimeMillis();
             
-            Map<String, Object> permiso = new HashMap<>();
-            permiso.put(usuario.getRol().getId().toString(), usuario.getRol().getNombre());
+            Map<String, Object> permisos = new HashMap<>();
+            if (usuario.getRol().getId() == 1){ // Administrador
+                permisos.put("1", "/medicos");
+                permisos.put("2", "/usuarios");
+            } else if (usuario.getRol().getId() == 2){ // Médico
+                permisos.put("1", "/consultas");
+                permisos.put("2", "/examenes");
+            }
             
             String jwt = Jwts.builder()
                              .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
                              .setSubject(usuario.getUsername())
                              .setIssuedAt(new Date(tiempoActual))
-                             .setExpiration(new Date(tiempoActual + 900000))
+                             .setExpiration(new Date(tiempoActual + 1800000)) // 30 min
                              .claim("usuario_id", usuario.getId())
-                             .claim("rol_id", usuario.getRol().getId())
-                             .claim("permiso", permiso)
+                             .claim("permisos", permisos)
                              .compact();
             
             // Agregar registro de token
@@ -109,6 +118,23 @@ public class UsuarioService implements IUsuarioService {
             throw new JwtTokenException("El token no pertenece al usuario");
         }
     }
+    
+    @Override
+    public void validarPermisos(String jwt, String url) throws PermissionsException {
+        Claims claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(jwt).getBody();
+        HashMap<String, Object> permisos = claims.get("permisos", HashMap.class);
+        boolean url_valida = false;
+        for (String clave : permisos.keySet()) {
+            String permiso = (String) permisos.get(clave);
+            if (url.contains(permiso)){
+                url_valida = true;
+                return;
+            }
+        }
+        if (!url_valida){
+            throw new PermissionsException("El usuario no tiene permisos sobre esta tabla");
+        }
+    }
 
     @Override
     public PagedListDto buscar(Integer pagina, Integer tamano) {
@@ -137,6 +163,13 @@ public class UsuarioService implements IUsuarioService {
         if (existeUsername){
             throw new IntegrityException("Ya existe un usuario con el username enviado");
         }
+        if (usuario.getRol().getId() == null){
+            throw new EmptyModelException("El id del rol es requerido");
+        }
+        Rol rol = rolRepository.find(usuario.getRol().getId());
+        if (rol == null){
+            throw new IntegrityException("No existe un rol con el id enviado");
+        }
         // Contraseña
         usuario.setContrasena(this.getSHA512(usuario.getContrasena()));
         // Estado (por defecto habilitado)
@@ -153,22 +186,6 @@ public class UsuarioService implements IUsuarioService {
         usuario.setEstado(estado);
         // Actualizar estado del usuario
         usuarioRepository.edit(usuario);
-    }
-    
-    @Override
-    public void validarPermisos(String jwt, String url) throws PermissionsException {
-        Claims claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(jwt).getBody();
-        int rolId = claims.get("rol_id", Integer.class);
-        
-        if (rolId == 1){ // Administrador
-            if (!url.contains("/usuarios") && !url.contains("/medicos")){
-                throw new PermissionsException("El usuario no tiene permisos sobre esta tabla");
-            }
-        } else if (rolId == 2) { // Medico
-            if (!url.contains("/consultas") && !url.contains("/examenes")){
-                throw new PermissionsException("El usuario no tiene permisos sobre esta tabla");
-            }
-        }
     }
     
     @Override
