@@ -33,6 +33,9 @@ import org.modelmapper.TypeToken;
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class ConsultaServiceImpl implements IConsultaService {
     
+    // @Resource
+    // private SessionContext context;
+    
     @EJB
     private IConsultaRepository consultaRepository;
     @EJB
@@ -121,6 +124,9 @@ public class ConsultaServiceImpl implements IConsultaService {
         medico.getConsultas().add(consulta);
         
         consultaRepository.create(consulta);
+        
+        // Examen exam = new Examen();
+        // examenRepository.create(exam);
     }
 
     @Override
